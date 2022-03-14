@@ -2,6 +2,7 @@ import pygame
 
 font: pygame.font = None
 
+
 def init():
     print("O Initializing fonts...", end = "")
     pygame.font.init()

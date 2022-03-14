@@ -1,7 +1,7 @@
-from subprocess import run, PIPE
-
 import os
 import sys
+from subprocess import run, PIPE
+
 
 def fetch() -> bool:
     """
@@ -14,7 +14,8 @@ def fetch() -> bool:
         print(f"\r\033[K\r! Error: Could not fetch git updates ({fetch_process.returncode})")
         print(f"! stdout: {fetch_process.stdout.decode('utf-8')}; stderr: {fetch_process.stderr.decode('utf-8')}")
     else:
-        return fetch_process.stdout.decode('utf-8').endswith(" ")  # If ends with " ", empty output so no updates avialible
+        return fetch_process.stdout.decode('utf-8').endswith(
+            " ")  # If ends with " ", empty output so no updates avialible
 
 
 def pull() -> bool:
@@ -50,4 +51,3 @@ def update():
         os.execl(sys.executable, sys.executable, *sys.argv)  # Restart script
     else:
         print("\r\033[K\r✓ No updates found!")
-

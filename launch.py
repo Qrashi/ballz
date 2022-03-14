@@ -1,7 +1,7 @@
 import os
 import sys
-from subprocess import run, PIPE
 from datetime import datetime
+from subprocess import run, PIPE
 
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 # Hide pygame message

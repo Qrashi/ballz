@@ -11,7 +11,7 @@ def generate(file: str, default: str = "{}") -> bool:
         if not stat(file).st_size < len(default.encode('utf-8')):
             return True
     else:
-        makedirs(path.dirname(file), exist_ok=True)
+        makedirs(path.dirname(file), exist_ok = True)
     with open(file, "w+") as file:
         file.write(default)
         return False
