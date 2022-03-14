@@ -1,6 +1,6 @@
 import os
 import sys
-from subprocess import run
+from subprocess import run, PIPE
 from datetime import datetime
 
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
@@ -25,18 +25,18 @@ def main():
             print("O Installing dependencies...")
             install = run("python -m pip install -r requirements.txt", shell = True, stdout = PIPE, stderr = PIPE)
             if install.returncode != 0:
-                print(f"\r\x1b[2K\r! Error; could not install required dependencies - return code {install.returncode}")
+                print(f"\r\033[K\r! Error; could not install required dependencies - return code {install.returncode}")
                 print(f"! stdout: \n{install.stdout.decode('utf-8')}\n! stderr: \n{install.stderr.decode('utf-8')}")
                 sys.exit()
             else:
                 print(
-                    "\r\x1b[2K\r✓ Installed dependencies")  # The \r\x1b[2K\r means go to upper line, clear upper line and start writing
-                # \r\x1b[2K\r basically replaces the "Installing dependencies" with "Installed dependencies"
+                    "\r\033[K\r✓ Installed dependencies")  # The \r\033[K\r means go to upper line, clear upper line and start writing
+                # \r\033[K\r basically replaces the "Installing dependencies" with "Installed dependencies"
                 os.execl(sys.executable, sys.executable, *sys.argv)  # Restart script
 
         # This will only get executed if the import of all dependencies succeeds
         config["last_git_check"] = datetime.now().timestamp()
-        print("\r\x1b[2K\r✓ Installation complete")
+        print("\r\033[K\r✓ Installation complete")
         pool.sync()
         os.execl(sys.executable, sys.executable, *sys.argv)  # Restart script
 

@@ -12,10 +12,9 @@ def generate(file: str, default: str = "{}") -> bool:
             return True
     else:
         makedirs(path.dirname(file), exist_ok=True)
-    file = open(file, "w+")
-    file.write(default)
-    file.close()
-    return False
+    with open(file, "w+") as file:
+        file.write(default)
+        return False
 
 
 def check(file: str) -> bool:
