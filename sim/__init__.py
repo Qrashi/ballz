@@ -5,7 +5,7 @@ The main simulation package
 import pygame
 
 from sim.objects import Drawable, Scene
-from . import loop, window, font
+from . import loop, window
 
 scene: Scene
 running = True

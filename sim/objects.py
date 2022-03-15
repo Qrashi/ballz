@@ -11,15 +11,12 @@ from sim.font import font
 
 
 class Drawable:
-    """
-    A general type
-    """
+
+    """A drawable object on a scene"""
     __scene: Scene
 
     def __init__(self, scene: Scene):
-        """
-        Create a new drawable object and register it in the scene
-        """
+        """Create a new drawable object and register it in the scene"""
         scene.add(self)
         self.__scene = scene
 
@@ -32,6 +29,7 @@ class Drawable:
 
 
 class Color:
+
     """
     A drawable color
     """
@@ -56,6 +54,7 @@ class Color:
 
 
 class Scene:
+
     """
     A Scene with its objects
     """
@@ -115,13 +114,14 @@ class Scene:
         :param background: Background of text. None is no background
         :return:
         """
-        rendered = font.render(text, True, color.tuple(), background = background)
+        rendered = font.render(text, True, color.tuple(), background=background)
         rect = rendered.get_rect()
         rect.center = (location.x // 2, location.y // 2)
         self.__display.blit(rendered, rect)
 
 
 class Coordinate:
+
     """
     A coordinate on the window
     """

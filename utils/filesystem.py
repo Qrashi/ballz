@@ -25,9 +25,9 @@ def generate(file: str, default: str = "{}"):
         if not stat(file).st_size < len(default.encode('utf-8')):
             return
     else:
-        makedirs(path.dirname(file), exist_ok = True)
-    with open(file, "w+") as file:
-        file.write(default)
+        makedirs(path.dirname(file), exist_ok=True)
+    with open(file, "w+") as new_file:
+        new_file.write(default)
 
 
 def load(file: str, mode: str = "r", default: str = "{}") -> TextIO:

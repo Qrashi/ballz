@@ -26,7 +26,7 @@ def main():
         except ModuleNotFoundError:
             # Install dependencies
             print("O Installing dependencies...")
-            install = run("python -m pip install -r requirements.txt", shell = True, stdout = PIPE, stderr = PIPE)
+            install = run("python -m pip install -r requirements.txt", shell=True, stdout=PIPE, stderr=PIPE)
             if install.returncode != 0:
                 print(f"\r\033[K\r! Error; could not install required dependencies - return code {install.returncode}")
                 print(f"! stdout: \n{install.stdout.decode('utf-8')}\n! stderr: \n{install.stderr.decode('utf-8')}")
@@ -34,7 +34,7 @@ def main():
             else:
                 print(
                     "\r\033[K\r✓ Installed dependencies")  # The \r\033[K\r means go to upper line, clear upper line and start writing
-                # \r\033[K\https://www.zalando.at/carhartt-wip-bib-overall-latzhose-dusty-brown-c1421t00j-b11.htmlr basically replaces the "Installing dependencies" with "Installed dependencies"
+                # \r\033[K\r basically replaces the "Installing dependencies" with "Installed dependencies"
                 os.execl(sys.executable, sys.executable, *sys.argv)  # Restart script
 
         # This will only get executed if the import of all dependencies succeeds
