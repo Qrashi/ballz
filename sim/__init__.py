@@ -4,7 +4,7 @@ The main simulation package
 
 import pygame
 
-from sim.objects import Drawable, Scene
+from sim.objects import Scene
 from . import loop, window
 
 scene: Scene

@@ -11,10 +11,10 @@ if __name__ == "__main__":
 
 
 class FilePool:
-
     """
     FilePool holds all currently used JsonFiles
     """
+
     __pool: Dict[str, JsonFile] = {}
 
     def open(self, filepath: str, default: str = "{}") -> JsonFile:

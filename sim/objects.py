@@ -11,8 +11,8 @@ from sim.font import font
 
 
 class Drawable:
-
     """A drawable object on a scene"""
+
     __scene: Scene
 
     def __init__(self, scene: Scene):
@@ -25,7 +25,6 @@ class Drawable:
         Draws the object onto a given scene
         :return:
         """
-        ...
 
 
 class Color:
@@ -54,7 +53,6 @@ class Color:
 
 
 class Scene:
-
     """
     A Scene with its objects
     """
@@ -121,10 +119,10 @@ class Scene:
 
 
 class Coordinate:
-
     """
     A coordinate on the window
     """
+
     x: int
     y: int
 
