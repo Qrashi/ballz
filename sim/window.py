@@ -1,10 +1,18 @@
+"""
+Window utilities
+"""
 import pygame
-
-from .objects import Scene
+import sim
+from sim.objects import Scene
 
 
 def init():
+    """
+    Initialize the pygame window
+    :return:
+    """
     pygame.init()
     info = pygame.display.Info()
     window = pygame.display.set_mode((info.current_w * 0.8, info.current_h * 0.8))
-    scene = Scene(window)
+    pygame.display.set_caption("ballz simulation", "simulation")
+    sim.scene = Scene(window)

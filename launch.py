@@ -1,17 +1,20 @@
+"""
+A script to install all dependencies, update the project and launch the simulation
+"""
 import os
 import sys
 from datetime import datetime
 from subprocess import run, PIPE
 
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
-# Hide pygame message
-
-import sim
-from sim.utils import pool
-from sim.utils import git
+from utils import pool
+from utils import git
 
 
 def main():
+    """
+    Launch the simulation
+    :return:
+    """
     config = pool.open("config.json").json
 
     if config["last_git_check"] == 0:
@@ -31,7 +34,7 @@ def main():
             else:
                 print(
                     "\r\033[K\r✓ Installed dependencies")  # The \r\033[K\r means go to upper line, clear upper line and start writing
-                # \r\033[K\r basically replaces the "Installing dependencies" with "Installed dependencies"
+                # \r\033[K\https://www.zalando.at/carhartt-wip-bib-overall-latzhose-dusty-brown-c1421t00j-b11.htmlr basically replaces the "Installing dependencies" with "Installed dependencies"
                 os.execl(sys.executable, sys.executable, *sys.argv)  # Restart script
 
         # This will only get executed if the import of all dependencies succeeds
@@ -48,6 +51,10 @@ def main():
         git.update()
         config["last_git_update"] = datetime.now().timestamp()
 
+    os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+    # Hide pygame message
+
+    import sim
     sim.init()
 
 

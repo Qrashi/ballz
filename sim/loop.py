@@ -1,9 +1,16 @@
+"""
+The main simulation loop handler
+"""
 import pygame
 
 import sim
 
 
 def start():
+    """
+    Start the event loop
+    :return:
+    """
     while sim.running:
         # Event loop
         for event in pygame.event.get():

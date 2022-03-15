@@ -1,3 +1,6 @@
+"""
+A set of utilities for maintaining git repositories
+"""
 import os
 import sys
 from subprocess import run, PIPE
