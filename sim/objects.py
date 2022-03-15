@@ -5,9 +5,9 @@ from __future__ import annotations
 
 from typing import Tuple, List
 
-from sim.font import font
-
 import pygame
+
+from sim.font import font
 
 
 class Drawable:

@@ -2,6 +2,7 @@
 Window utilities
 """
 import pygame
+
 import sim
 from sim.objects import Scene
 

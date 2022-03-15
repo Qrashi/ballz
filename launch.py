@@ -6,8 +6,8 @@ import sys
 from datetime import datetime
 from subprocess import run, PIPE
 
-from utils import pool
 from utils import git
+from utils import pool
 
 
 def main():

@@ -16,7 +16,7 @@ class FilePool:
     """
     FilePool holds JsonFiles
     """
-    __pool: Dict[str, JsonFile] = {}
+    __pool: Dict[str, JsonFile] = { }
 
     def open(self, filepath: str, default: str = "{}") -> JsonFile:
         """
