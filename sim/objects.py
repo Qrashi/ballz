@@ -3,6 +3,7 @@ A file defining all simulation objects
 """
 from __future__ import annotations
 
+import math
 from typing import Tuple, List
 
 import pygame
@@ -10,19 +11,33 @@ import pygame
 from sim.font import font
 
 
-class Drawable:
+class SceneObject:
     """A drawable object on a scene"""
 
-    __scene: Scene
+    _scene: Scene
 
     def __init__(self, scene: Scene):
         """Create a new drawable object and register it in the scene"""
         scene.add(self)
-        self.__scene = scene
+        self._scene = scene
 
     def draw(self):
         """
         Draws the object onto a given scene
+        :return:
+        """
+
+    def click(self):
+        """
+        Will be executed on mouse down
+        :param touches: Weather the curser touches this object
+        :return:
+        """
+
+    def release(self):
+        """
+        Will be executed upon mouse up (mouse click release)
+        :param touches: Weather the cursor touches this object
         :return:
         """
 
@@ -44,12 +59,12 @@ class Color:
         self.g: int = g
         self.b: int = b
 
-    def tuple(self) -> Tuple[int, int, int]:
+    def tuple(self) -> Tuple[int, int, int, int]:
         """
         Create a tuple for using colors in pygame
         :return: A tuple of all the values (r, g, b)
         """
-        return self.r, self.g, self.b
+        return self.r, self.g, self.b, 255
 
 
 class Scene:
@@ -58,7 +73,7 @@ class Scene:
     """
 
     __display: pygame.Surface
-    __objects: List[Drawable] = []
+    __objects: List[SceneObject] = []
 
     def __init__(self, display: pygame.Surface):
         """
@@ -67,7 +82,7 @@ class Scene:
         """
         self.__display: pygame.Surface = display
 
-    def add(self, obj: Drawable):
+    def add(self, obj: SceneObject):
         """
         Add an object to the scene
         :param obj: Object to add (must be of type Drawable)
@@ -80,8 +95,10 @@ class Scene:
         Redraw all objects
         :return:
         """
+        self.__display.fill((0, 0, 0))
         for drawable in self.__objects:
             drawable.draw()
+        pygame.display.update()
 
     def line(self, source: Coordinate, destination: Coordinate, color: Color):
         """
@@ -112,10 +129,13 @@ class Scene:
         :param background: Background of text. None is no background
         :return:
         """
-        rendered = font.render(text, True, color.tuple(), background=background)
+        rendered = font.render(text, True, color.tuple(), background)
         rect = rendered.get_rect()
-        rect.center = (location.x // 2, location.y // 2)
+        rect.center = (location.x, location.y)
         self.__display.blit(rendered, rect)
+
+    def objects(self) -> List[SceneObject]:
+        return self.__objects
 
 
 class Coordinate:
@@ -160,9 +180,55 @@ class Coordinate:
         """
         return f"[x{self.x}; y{self.y}]"
 
+    def distance(self, coordinate: Coordinate) -> float:
+        """
+        Get the distance between two vectors
+        :param coordinate: other coordinate to measure distance to
+        :return: distance
+        """
+        x: int = self.x - coordinate.x  # deltaY
+        y: int = self.y - coordinate.y  # deltaX
+        return math.sqrt(x*x + y*y)  # sqrt x^2+y^2
+
     def tuple(self) -> Tuple[int, int]:
         """
         Create a tuple to use in pygame
         :return: A tuple of (x and y)
         """
         return self.x, self.y
+
+
+class Ball(SceneObject):
+    """
+    A ball in the simulation
+    """
+
+    center: Coordinate
+    radius: int
+    color: Color
+    __moving: bool = False
+
+    def __init__(self, scene: Scene, center: Coordinate, radius: int, color: Color):
+        """
+        Create a new ball and register it to the scene
+        :param scene: Scene to register ball to
+        :param center: Starting coordinates
+        """
+        super().__init__(scene)
+        self.center = center
+        self.radius = radius
+        self.color = color
+
+    def click(self):
+        if self.center.distance(Coordinate(*pygame.mouse.get_pos())) <= self.radius:
+            # If distance to mouse is less or equal distance to mouse
+            self.__moving = True
+
+    def release(self):
+        if self.__moving:
+            self.center = Coordinate(*pygame.mouse.get_pos())  # Unpack position tuple
+            self.__moving = False
+
+    def draw(self):
+        self._scene.circle(self.center, self.radius, self.color)
+        self._scene.text(self.center, str(self.radius), Color(255, 255, 255))
