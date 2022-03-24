@@ -6,10 +6,12 @@ import pygame
 
 import sim.objects
 from sim.objects import Scene
-from . import loop, window
+from . import loop, window, font, constants, mouse
+
 
 scene: Scene
 running = True
+simulate = False
 
 
 def init():
@@ -19,6 +21,7 @@ def init():
     """
     window.init()
     print("O Initializing simulation")
-    scene.add(sim.objects.Ball(scene, sim.objects.Coordinate(200, 200), 100, sim.objects.Color(255, 0, 0)))
+    sim.objects.ElasticBand(scene, 600, 200, sim.window.middle, 42.2, 3)
+
     loop.start()
     pygame.quit()

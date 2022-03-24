@@ -4,8 +4,12 @@ Window utilities
 import pygame
 
 import sim
-from sim.objects import Scene
+from sim.objects import Scene, Coordinate
 
+
+width: int
+height: int
+middle: Coordinate
 
 def init():
     """
@@ -14,7 +18,9 @@ def init():
     """
     pygame.init()
     info = pygame.display.Info()
-    window = pygame.display.set_mode((info.current_w * 0.8, info.current_h * 0.8))
-    pygame.display.set_caption("ballz simulation", "simulation")
+    sim.window.width, sim.window.height = info.current_w * 0.8, info.current_h * 0.8
+    window = pygame.display.set_mode((sim.window.width, sim.window.height))
+    pygame.display.set_caption("ballz", "ballz simulation")
     pygame.display.set_icon(pygame.image.load("icon.png", "burning football"))
     sim.scene = Scene(window)
+    sim.window.middle = Coordinate(sim.window.width/2, sim.window.height/2)
