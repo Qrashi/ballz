@@ -22,7 +22,7 @@ def init():
     _texts.append((rendered, rect))
     rendered = sim.font.small_font.render(f"ballz v{sim.VERSION}", True, (81, 81, 81), (0, 0, 0))
     rect = rendered.get_rect()
-    rect.center = (sim.window.width - rendered.get_rect().size[0] // 2, sim.window.height - rendered.get_rect().size[1] // 2)
+    rect.center = (sim.scene.width - rendered.get_rect().size[0] // 2 - 5, sim.window.height - rendered.get_rect().size[1] // 2)
     _texts.append((rendered, rect))
 
 
