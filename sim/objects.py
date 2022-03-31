@@ -50,8 +50,8 @@ class Ball(SceneObject):
         self.torsion_constant = torsion_constant
         self.some_constant = some_constant
         self.moment_of_inertia = (2 / 5) * self.mass * radius * radius
-        self._temp_coords = self.center + Coordinate(math.sin(self.angle) * self.distance,
-                                                     math.cos(self.angle) * self.distance)
+        self._temp_coords = self.center + Coordinate(math.sin(self.angle) * (self.distance * 1000),
+                                                     math.cos(self.angle) * (self.distance * 1000))
 
     def draw(self):
         """

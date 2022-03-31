@@ -23,6 +23,7 @@ def init():
     :return:
     """
     window.init()
+    font.init()
     static_scene.init()
     print("O Initializing simulation", end="")
     sim.objects.ElasticBand(scene,

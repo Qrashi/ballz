@@ -9,8 +9,6 @@ corner: Coordinate
 _selected: SceneObject = None
 _start__plot: int = 0
 
-_plot_y_size = 300
-
 delta_t: List[int] = []
 _font_cache: Dict[str, pygame.Surface] = {}
 
@@ -36,7 +34,9 @@ def draw():
                        corner.y + (sim.window.height - corner.y) // 2 + obj_rect.size[1] * 2)
         sim.window.pygame_scene.blit(rendered, rect)
         return
-    plots = min(len(_selected.data), sim.window.height // _plot_y_size) + 1000
+    plots = min(len(_selected.data), sim.window.width // 6) # Max plots to display is 6
+    plot_y_size = sim.window.height // plots
+    
     # The number of plots to display, if the number of plots in the selected sceneobjects are more than the window can fit (height / plot y size)
     current_plot = 0
     data_incl_perf = _selected.data.copy()
@@ -52,9 +52,9 @@ def draw():
         rect = rendered.get_rect()
         # size = (x_size, y_size)
         # max x - rect x size / 2, current plot * plot y size + rect y size / 2
-        value_rect.center = (sim.window.width - value_rect.size[0] // 2, (current_plot + 1) * _plot_y_size + rect.size[1] // 2 - 40)
-        # __plot_y_size down and 10 up because bottom edge of graph
-        rect.center = (sim.window.width - rect.size[0] // 2 - 5, current_plot * _plot_y_size + rect.size[1] // 2 + 10)
+        value_rect.center = (sim.window.width - value_rect.size[0] // 2, (current_plot + 1) * plot_y_size + rect.size[1] // 2 - 40)
+        # plot_y_size down and 10 up because bottom edge of graph
+        rect.center = (sim.window.width - rect.size[0] // 2 - 5, current_plot * plot_y_size + rect.size[1] // 2 + 10)
         # +10 for white line width
         # data * scale = y pos
         # delta is the maximum change to 0
@@ -66,20 +66,20 @@ def draw():
             delta = 1
 
         # max_delta * scale = __max_y_pos / 2
-        y_scale = (_plot_y_size // 2) / delta
-        # __plot_y_scale half because negative part of graph is half the graph!!!!
+        y_scale = (plot_y_size // 2) / delta
+        # plot_y_scale half because negative part of graph is half the graph!!!!
         x = corner.x + 10
         prev = None
         pygame.draw.line(sim.window.pygame_scene, (41, 41, 41),
-                         (corner.x, current_plot * _plot_y_size + _plot_y_size // 2),
-                         (sim.window.width, current_plot * _plot_y_size + _plot_y_size // 2), width=5)
+                         (corner.x, current_plot * plot_y_size + plot_y_size // 2),
+                         (sim.window.width, current_plot * plot_y_size + plot_y_size // 2), width=5)
         for index in range(len(data) - 1, len(data) - sim.window.width - int(corner.x), -1):
             if index < 0:
                 current = prev
             else:
                 # print(plot_name, y_scale * data[index])
                 # print(y_scale * data[index])
-                current = (x, (current_plot + 1) * _plot_y_size - (y_scale * data[index]) - _plot_y_size // 2)
+                current = (x, (current_plot + 1) * plot_y_size - (y_scale * data[index]) - plot_y_size // 2)
                 # top of plot size - y value (y is inverted)
             x = x + 1
             if prev is None:
@@ -92,12 +92,12 @@ def draw():
 
         sim.window.pygame_scene.blit(rendered, rect)
         sim.window.pygame_scene.blit(value_rendered, value_rect)
-        pygame.draw.line(sim.window.pygame_scene, (255, 255, 255), (corner.x, (current_plot + 1) * _plot_y_size),
-                         (sim.window.width, (current_plot + 1) * _plot_y_size), width=5)
+        pygame.draw.line(sim.window.pygame_scene, (255, 255, 255), (corner.x, (current_plot + 1) * plot_y_size),
+                         (sim.window.width, (current_plot + 1) * plot_y_size), width=5)
         # Dont need big white line at the top so current_plot + 1
         # Draw upper line again, trace might have interfered with upper line
-        pygame.draw.line(sim.window.pygame_scene, (255, 255, 255), (corner.x, current_plot * _plot_y_size),
-                         (sim.window.width, current_plot * _plot_y_size), width=5)
+        pygame.draw.line(sim.window.pygame_scene, (255, 255, 255), (corner.x, current_plot * plot_y_size),
+                         (sim.window.width, current_plot * plot_y_size), width=5)
         # Middle line
 
         current_plot = current_plot + 1
