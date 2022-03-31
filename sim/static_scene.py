@@ -33,3 +33,7 @@ def apply():
     """
     for text in _texts:
         sim.window.pygame_scene.blit(*text)
+    rendered = sim.font.small_font.render(str(sim.iteration), True, (81, 81, 81), (0, 0, 0))
+    rect = rendered.get_rect()
+    rect.center = (sim.scene.width - rendered.get_rect().size[0] // 2 - 5, rendered.get_rect().size[1] // 2)
+    sim.window.pygame_scene.blit(rendered, rect)
