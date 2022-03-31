@@ -18,3 +18,5 @@ the [2022 IYPT problems](https://www.iypt.org/wp-content/uploads/2021/07/problem
 
 The launch.py file will automatically update the project and install dependencies for you.
 
+#### In case something breaks
+Try running ``git fetch origin`` and ``git pull origin`` to update to the newest version
