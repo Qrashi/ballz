@@ -21,7 +21,6 @@ class SceneObject:
         scene.add(self)
         self._scene = scene
 
-
     def physics_tick(self, delta_t: float):
         """
         Executed every physics tick
@@ -202,6 +201,7 @@ class Color:
         :return:
         """
         return Color(255 - self.r, 255 - self.g, 255 - self.b)
+
 
 class Coordinate:
     """

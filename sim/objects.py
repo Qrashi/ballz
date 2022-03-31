@@ -75,7 +75,6 @@ class ElasticBand(SceneObject):
         self.ball_data_2 = DataObject(name + " ball 2", {"angle [rad]": [], "angular velocity [rad/s]": [], "angular acceleration [rad/s²]": [], "x [m]": [], "y [m]": []})
         scene.data = scene.data + [self.band_data, self.ball_data_1, self.ball_data_2]
 
-
     def _update_coords(self):
         """
         Update the temporary ball coordinates
