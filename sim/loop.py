@@ -41,7 +41,7 @@ def start():
                     sim.data.delta_t.append(0.0333)
                     screen()
                 if event.key == pygame.K_PAGEUP:
-                    for i in range(10):
+                    for _ in range(10):
                         for obj in sim.scene.objects():
                             obj.physics_tick(0.0333)
                             obj.log()
@@ -49,7 +49,7 @@ def start():
                         sim.data.delta_t.append(0.0333)
                     screen()
                 if event.key == pygame.K_PAGEDOWN:
-                    for i in range(100):
+                    for _ in range(100):
                         for obj in sim.scene.objects():
                             obj.physics_tick(0.0333)
                             obj.log()
