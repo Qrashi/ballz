@@ -8,6 +8,9 @@ small_font: pygame.font.SysFont
 normal_font_size: int = 100
 
 def init():
+    """
+    Initialize all fonts and scale them appropriately
+    """
     print("O Loading font system", end="")
     pygame.font.init()
     if sim.window.height < 2000:

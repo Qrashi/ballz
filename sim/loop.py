@@ -42,7 +42,7 @@ def start():
                     return
                 if event.key == pygame.K_SPACE:
                     sim.simulate = not sim.simulate
-            if event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.MOUSEBUTTONUP:
+            if event.type in (pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP):
                 if event.button == 1:
                     # Parse mouse click
                     for scene_object in sim.scene.objects():
@@ -62,4 +62,3 @@ def screen():
     sim.data.draw()
     sim.static_scene.apply()
     pygame.display.flip()
-

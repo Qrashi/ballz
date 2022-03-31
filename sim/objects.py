@@ -27,7 +27,6 @@ class Ball(SceneObject):
     torsion_constant: float
     some_constant: float
     _temp_coords: Coordinate
-    __moving: bool = False
 
     def __init__(self, scene: sim.Scene, angle: float, distance: float, center: Coordinate, radius: float, color: Color,
                  mass: float, torsion_constant: float, some_constant: float, name: str):
@@ -85,8 +84,11 @@ class Ball(SceneObject):
         self.data["angular acceleration [rad/s²]"].append(self.angular_acceleration)
 
     def click(self):
+        """
+        Handle a click on the ball and select if clicked
+        """
         if sim.mouse.mouse().distance(self._temp_coords) <= self.size:
-            sim.data.select(self)
+            sim.data.selected = self
 
     def physics_tick(self, delta_t: float):
         """
@@ -94,8 +96,6 @@ class Ball(SceneObject):
         :param delta_t:
         :return:
         """
-
-        # calculate new angular_acceleration
         self.angular_acceleration = self.angular_acceleration + delta_t * (
             -2 * (self.torsion_constant * self.size)
             * self.angle
@@ -189,10 +189,16 @@ class ElasticBand(SceneObject):
         self._scene.line(self.balls[0].temp_coords, self.balls[1].temp_coords, Color(255, 255, 255))
 
     def click(self):
+        """
+        Check if object was clicked and select it
+        """
         if sim.mouse.mouse().distance(self.center) <= 25:
-            sim.data.select(self)
+            sim.data.selected = self
 
     def log(self):
+        """
+        Log data to data storage
+        """
         self.data["length [p|cm]"].append(self.length)
         self.data["length speed [cm/s]"].append(self.length_speed)
         self.data["length acceleration [cm/s²]"].append(self.length_acceleration)

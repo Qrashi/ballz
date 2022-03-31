@@ -6,8 +6,7 @@ import sim.window
 from sim.scene import Coordinate, SceneObject, Color
 
 corner: Coordinate
-_selected: SceneObject = None
-_start__plot: int = 0
+selected: SceneObject = None
 
 delta_t: List[int] = []
 _font_cache: Dict[str, pygame.Surface] = {}
@@ -19,14 +18,13 @@ def draw():
     :return:
     """
     # Draw the basic "box" for data
-    if _selected is None:
+    if selected is None:
         # No data
         pygame.draw.line(sim.window.pygame_scene, (255, 255, 255), (corner.x, corner.y), (corner.x, sim.window.height),
                          width=10)
         rendered = sim.font.main_font.render("object inspector", True, (255, 255, 255), (0, 0, 0))
         obj_rect = rendered.get_rect()
-        obj_rect.center = (
-        corner.x + (sim.window.width - corner.x) // 2, corner.y + (sim.window.height - corner.y) // 2)
+        obj_rect.center = (corner.x + (sim.window.width - corner.x) // 2, corner.y + (sim.window.height - corner.y) // 2)
         sim.window.pygame_scene.blit(rendered, obj_rect)
         rendered = sim.font.main_font.render("click to select", True, (255, 255, 255), (0, 0, 0))
         rect = rendered.get_rect()
@@ -34,12 +32,11 @@ def draw():
                        corner.y + (sim.window.height - corner.y) // 2 + obj_rect.size[1] * 2)
         sim.window.pygame_scene.blit(rendered, rect)
         return
-    plots = min(len(_selected.data), sim.window.width // 6) # Max plots to display is 6
+    plots = min(len(selected.data), sim.window.width // 6) # Max plots to display is 6
     plot_y_size = sim.window.height // plots
-    
     # The number of plots to display, if the number of plots in the selected sceneobjects are more than the window can fit (height / plot y size)
     current_plot = 0
-    data_incl_perf = _selected.data.copy()
+    data_incl_perf = selected.data.copy()
     data_incl_perf["delta t [s]"] = delta_t
     for plot_name, data in data_incl_perf.items():
         if len(data) == 0:
@@ -77,8 +74,6 @@ def draw():
             if index < 0:
                 current = prev
             else:
-                # print(plot_name, y_scale * data[index])
-                # print(y_scale * data[index])
                 current = (x, (current_plot + 1) * plot_y_size - (y_scale * data[index]) - plot_y_size // 2)
                 # top of plot size - y value (y is inverted)
             x = x + 1
@@ -109,12 +104,13 @@ def draw():
 
 
 def _font(text: str, color: Tuple[int, int, int]) -> pygame.Surface:
+    """
+    Generate the rendered font or return a cached one
+    :param text: The text to render
+    :param color: The color of the text
+    :return: The rendered font
+    """
     if text in _font_cache:
         return _font_cache[text]
         # Dont even check if it has the correct color. It has.
     return sim.font.small_font.render(text, True, color, (0, 0, 0))
-
-
-def select(obj: SceneObject):
-    sim.data._selected = obj
-    sim.data._start__plot = 0

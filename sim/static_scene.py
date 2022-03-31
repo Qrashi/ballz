@@ -32,3 +32,4 @@ def apply():
     """
     for text in _texts:
         sim.window.pygame_scene.blit(*text)
+        

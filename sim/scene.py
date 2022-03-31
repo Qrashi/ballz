@@ -21,7 +21,6 @@ class SceneObject:
         :param scene: Scene to register to
         :param initial_data: Initial data logging structure to save
         """
-
         scene.add(self)
         self._scene = scene
         self.data = initial_data

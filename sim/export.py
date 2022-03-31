@@ -69,5 +69,3 @@ def sheet_setup(sheet: worksheet):
     for delta_t in sim.data.delta_t:
         sheet.cell(row=iteration, column=1).value = delta_t
         iteration += 1
-
-
