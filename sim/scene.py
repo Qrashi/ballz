@@ -12,25 +12,15 @@ class SceneObject:
     """A drawable object on a scene"""
 
     _scene: Scene
-    data: Dict[str, List[float]]
-    name: str
 
-    def __init__(self, scene: Scene, initial_data: Dict[str, List[float]], name: str):
+    def __init__(self, scene: Scene):
         """
         Create a new drawable object and register it in the scene
         :param scene: Scene to register to
-        :param initial_data: Initial data logging structure to save
         """
         scene.add(self)
         self._scene = scene
-        self.data = initial_data
-        self.name = name
 
-    def log(self):
-        """
-        Log the current values to the data attribute, will be called by the loop
-        :return:
-        """
 
     def physics_tick(self, delta_t: float):
         """
@@ -42,6 +32,12 @@ class SceneObject:
     def draw(self):
         """
         Draws the object onto a given scene
+        :return:
+        """
+
+    def log(self):
+        """
+        Log data to the data storage
         :return:
         """
 
@@ -58,6 +54,24 @@ class SceneObject:
         """
 
 
+class DataObject:
+    """
+    A data object that holds data for a scene object or the "subparts" of a sceneobjects
+    """
+
+    name: str
+    data: Dict[str, List[float]]
+
+    def __init__(self, name: str, data: Dict[str, List[float]]):
+        """
+        Initialize the data object
+        :param name: Name of the dataobject
+        :param data: Initial data structure
+        """
+        self.data = data
+        self.name = name
+
+
 class Scene:
     """
     A Scene with its objects
@@ -66,6 +80,7 @@ class Scene:
     __display: pygame.Surface
     __objects: List[SceneObject] = []
     corner: Coordinate
+    data: List[DataObject] = []
     height: int
     width: int
 
@@ -138,21 +153,38 @@ class Scene:
         self.__display.blit(rendered, rect)
 
     def objects(self) -> List[SceneObject]:
+        """
+        Return a list of all objects in the scene
+        :return: A list of objects in the scene
+        """
         return self.__objects
+
+    def reset(self):
+        """
+        Reset the scene
+        :return:
+        """
+        self.__objects = []
+        self.data = []
 
 
 class Color:
     """
     A drawable color
     """
+    r: int
+    g: int
+    b: int
+    alpha: int
 
-    def __init__(self, r: int, g: int, b: int):
+    def __init__(self, r: int, g: int, b: int, alpha: int = 255):
         """
         Initialize a new color
         :param r: r value
         :param g: g value
         :param b: b value
         """
+        self.alpha = alpha
         self.r: int = r
         self.g: int = g
         self.b: int = b
@@ -162,8 +194,14 @@ class Color:
         Create a tuple for using colors in pygame
         :return: A tuple of all the values (r, g, b)
         """
-        return self.r, self.g, self.b, 255
+        return self.r, self.g, self.b, self.alpha
 
+    def __invert__(self):
+        """
+        Invert the color
+        :return:
+        """
+        return Color(255 - self.r, 255 - self.g, 255 - self.b)
 
 class Coordinate:
     """

@@ -39,7 +39,8 @@ def export_excel():
     alldatacolumn = 2
     sheet_setup(workbook["all data"])
 
-    for sceneobj in sim.scene.objects():
+    for sceneobj in sim.scene.data:
+        print(sceneobj.name)
         workbook.create_sheet(sceneobj.name)
         sheet = workbook[sceneobj.name]
         sheet.sheet_properties.tabColor = "802f8e"
@@ -62,6 +63,11 @@ def export_excel():
 
 
 def sheet_setup(sheet: worksheet):
+    """
+    Setup a sheet with the delta_t column
+    :param sheet: The sheet to set up
+    :return:
+    """
     sheet.cell(row=1, column=1).value = "dalta t [s]"
     sheet.column_dimensions[utils.get_column_letter(1)].width = len("delta t [s]")
 

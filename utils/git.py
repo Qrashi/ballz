@@ -12,7 +12,7 @@ def fetch() -> bool:
     :return: Whether a new version is available
     """
     print("\r\033[K\rO Fetching updates...", end="")
-    fetch_process = run("git fetch", shell=True, stdout=PIPE, stderr=PIPE)
+    fetch_process = run("git fetch origin", shell=True, stdout=PIPE, stderr=PIPE)
     if fetch_process.returncode != 0:
         print(f"\r\033[K\r! Error: Could not fetch git updates ({fetch_process.returncode})")
         print(f"! stdout: {fetch_process.stdout.decode('utf-8')}; stderr: {fetch_process.stderr.decode('utf-8')}")
@@ -25,7 +25,7 @@ def fetch() -> bool:
 def pull() -> bool:
     """
     Pull new updates from the repository
-    :return: State of pull; sucessful or not
+    :return: State of pull; successful or not
     """
     print("\r\033[K\rO Downloading updates...", end="")
     pull_process = run("git pull origin main", shell=True, stdout=PIPE, stderr=PIPE)

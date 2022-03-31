@@ -3,12 +3,12 @@ from typing import List, Dict, Tuple
 import pygame
 
 import sim.window
-from sim.scene import Coordinate, SceneObject, Color
+from sim.scene import Coordinate, DataObject
 
 corner: Coordinate
-selected: SceneObject = None
+selected: DataObject = None
 
-delta_t: List[int] = []
+delta_t: List[float] = []
 _font_cache: Dict[str, pygame.Surface] = {}
 
 
@@ -32,7 +32,7 @@ def draw():
                        corner.y + (sim.window.height - corner.y) // 2 + obj_rect.size[1] * 2)
         sim.window.pygame_scene.blit(rendered, rect)
         return
-    plots = min(len(selected.data), 6)  # Max plots to display is 6
+    plots = min(len(selected.data) + 1, 6)  # Max plots to display is 6
     plot_y_size = sim.window.height // plots
     # The number of plots to display, if the number of plots in the selected sceneobjects are more than the window can fit (height / plot y size)
     current_plot = 0
@@ -42,8 +42,7 @@ def draw():
         if len(data) == 0:
             value_rendered = _font("no data", (100, 100, 100))
         else:
-            value_rendered = sim.font.small_font.render(str(round(data[len(data) - 1], 5)), True, (100, 100, 100),
-                                                        (0, 0, 0))
+            value_rendered = sim.font.small_font.render(str(round(data[-1], 5)), True, (100, 100, 100), (0, 0, 0))
         rendered = _font(plot_name, (255, 255, 255))
         value_rect = value_rendered.get_rect()
         rect = rendered.get_rect()

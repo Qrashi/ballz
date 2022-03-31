@@ -15,16 +15,12 @@ def start():
     :return:
     """
     while sim.running:
-        if sim.simulate:
-            delta_t_diff = datetime.now() - sim.loop.last_time
-            delta_t = delta_t_diff.total_seconds()
-        sim.loop.last_time = datetime.now()
         # Set the last time to now, delta_t will include calculation time of the next step
         if sim.simulate:
             for obj in sim.scene.objects():
-                obj.physics_tick(delta_t)
+                obj.physics_tick(0.0333)
                 obj.log()
-            sim.data.delta_t.append(delta_t)
+            sim.iteration += 1
             screen()
 
         # Event loop
@@ -37,6 +33,39 @@ def start():
                 if event.key == pygame.K_e:
                     sim.export.export_excel()
                     print("✓ Exported to excel")
+                if event.key == pygame.K_RIGHT:
+                    for obj in sim.scene.objects():
+                        obj.physics_tick(0.0333)
+                        obj.log()
+                    sim.iteration += 1
+                    sim.data.delta_t.append(0.0333)
+                    screen()
+                if event.key == pygame.K_PAGEUP:
+                    for i in range(10):
+                        for obj in sim.scene.objects():
+                            obj.physics_tick(0.0333)
+                            obj.log()
+                        sim.iteration += 1
+                        sim.data.delta_t.append(0.0333)
+                    screen()
+                if event.key == pygame.K_PAGEDOWN:
+                    for i in range(100):
+                        for obj in sim.scene.objects():
+                            obj.physics_tick(0.0333)
+                            obj.log()
+                        sim.iteration += 1
+                        sim.data.delta_t.append(0.0333)
+                    screen()
+                if event.key == pygame.K_r:
+                    sim.scene.reset()
+                    sim.objects.ElasticBand(sim.scene,
+                                            0.15, 0.15, 1, sim.scene.middle(), 1150.16, 0,
+                                            0.2453, 0.02, 0.000001, 0,
+                                            "elastic band 1")
+                    sim.iteration = 0
+                    sim.selected = None
+                    print("✓ Reset")
+                    screen()
                 if event.key == pygame.K_ESCAPE:
                     sim.running = False
                     return
