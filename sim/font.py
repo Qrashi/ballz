@@ -1,4 +1,5 @@
-import pygame, sim
+import pygame
+import sim
 
 from utils import pool
 
@@ -6,6 +7,7 @@ main_font: pygame.font.SysFont
 small_font_size: int = 100
 small_font: pygame.font.SysFont
 normal_font_size: int = 100
+
 
 def init():
     """

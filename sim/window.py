@@ -1,7 +1,8 @@
 """
 Window utilities
 """
-import pygame, math
+import pygame
+import math
 
 import sim
 from sim.scene import Coordinate

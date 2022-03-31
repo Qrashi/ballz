@@ -17,6 +17,7 @@ simulate = False
 VERSION = "a0.1"
 start = datetime.now().timestamp()
 
+
 def init():
     """
     Initialize the simulation

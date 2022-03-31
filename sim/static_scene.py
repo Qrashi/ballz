@@ -6,6 +6,7 @@ import sim.window
 
 _texts: List[Tuple[Surface, Surface]] = []
 
+
 def init():
     """
     Fill the texts array
@@ -32,4 +33,3 @@ def apply():
     """
     for text in _texts:
         sim.window.pygame_scene.blit(*text)
-        

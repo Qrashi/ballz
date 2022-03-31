@@ -2,6 +2,7 @@ import pygame.mouse
 
 import sim
 
+
 def mouse() -> sim.Coordinate:
     """
     Retrieve the current mouse position

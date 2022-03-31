@@ -32,7 +32,7 @@ def draw():
                        corner.y + (sim.window.height - corner.y) // 2 + obj_rect.size[1] * 2)
         sim.window.pygame_scene.blit(rendered, rect)
         return
-    plots = min(len(selected.data), sim.window.width // 6) # Max plots to display is 6
+    plots = min(len(selected.data), 6)  # Max plots to display is 6
     plot_y_size = sim.window.height // plots
     # The number of plots to display, if the number of plots in the selected sceneobjects are more than the window can fit (height / plot y size)
     current_plot = 0
