@@ -1,5 +1,3 @@
-import imp
-from multiprocessing.spawn import import_main_path
 """
 Handles loading scenarios from json file and setting them up
 """
