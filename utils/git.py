@@ -17,7 +17,7 @@ def fetch() -> bool:
         print(f"\r\033[K\r! Error: Could not fetch git updates ({fetch_process.returncode})")
         print(f"! stdout: {fetch_process.stdout.decode('utf-8')}; stderr: {fetch_process.stderr.decode('utf-8')}")
     else:
-        return len(fetch_process.stdout.decode('utf-8')) > 3  # If message has content
+        return "from" in fetch_process.stdout.decode('utf-8').lower()  # If message has content
     return False
 
 
