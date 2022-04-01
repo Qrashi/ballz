@@ -2,12 +2,13 @@
 The main simulation loop handler
 """
 import pygame
-from datetime import datetime
+from time import perf_counter_ns
 
 import sim
 
-last_time = datetime.now()
-
+delta_t = 0.000001  # Time step to simulate
+every = 5000  # How often to render a frame
+realtime = 0  # Time passed since start of simulation
 
 def start():
     """
@@ -17,11 +18,7 @@ def start():
     while sim.running:
         # Set the last time to now, delta_t will include calculation time of the next step
         if sim.simulate:
-            for obj in sim.scene.objects():
-                obj.physics_tick(0.0333)
-                obj.log()
-            sim.iteration += 1
-            screen()
+            tick(False)
 
         # Event loop
         for event in pygame.event.get():
@@ -34,38 +31,24 @@ def start():
                     sim.export.export_excel()
                     print("✓ Exported to excel")
                 if event.key == pygame.K_RIGHT:
-                    for obj in sim.scene.objects():
-                        obj.physics_tick(0.0333)
-                        obj.log()
-                    sim.iteration += 1
-                    sim.data.delta_t.append(0.0333)
-                    screen()
+                    sim.scenarios.next()
+                if event.key == pygame.K_LEFT:
+                    sim.scenarios.prev()
+                if event.key == pygame.K_l:
+                    sim.scenarios.reload()
+                if event.key == pygame.K_DOWN:
+                    tick(True)
                 if event.key == pygame.K_PAGEUP:
                     for _ in range(10):
-                        for obj in sim.scene.objects():
-                            obj.physics_tick(0.0333)
-                            obj.log()
-                        sim.iteration += 1
-                        sim.data.delta_t.append(0.0333)
+                        tick(False)
                     screen()
                 if event.key == pygame.K_PAGEDOWN:
                     for _ in range(100):
-                        for obj in sim.scene.objects():
-                            obj.physics_tick(0.0333)
-                            obj.log()
-                        sim.iteration += 1
-                        sim.data.delta_t.append(0.0333)
+                        tick(False)
                     screen()
                 if event.key == pygame.K_r:
-                    sim.scene.reset()
-                    sim.objects.ElasticBand(sim.scene,
-                                            0.15, 0.15, 1, sim.scene.middle(), 1150.16, 0,
-                                            0.2453, 0.02, 0.000001, 0,
-                                            "elastic band 1")
-                    sim.iteration = 0
-                    sim.selected = None
-                    print("✓ Reset")
-                    screen()
+                    sim.scenarios.reset()
+                
                 if event.key == pygame.K_ESCAPE:
                     sim.running = False
                     return
@@ -79,6 +62,26 @@ def start():
                     if event.type == pygame.MOUSEBUTTONUP:
                         scene_object.release()
                 screen()
+
+
+def tick(render: bool):
+    """
+    Simulate one iteration
+    :param render: Force render a frame
+    """
+    precalc = perf_counter_ns()
+    for obj in sim.scene.objects():
+        obj.physics_tick(delta_t)
+        obj.log()
+    sim.iteration += 1
+    sim.data.delta_t.append(perf_counter_ns() - precalc)
+    sim.loop.realtime += delta_t
+    sim.data.realtime.append(sim.loop.realtime)
+    if render:
+        screen()
+        return
+    if sim.iteration % every == 0:
+        screen()
 
 
 def screen():

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import math
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, Union
 
 import pygame
 
@@ -59,7 +59,7 @@ class DataObject:
     """
 
     name: str
-    data: Dict[str, List[float]]
+    data: Dict[str, Dict[str, Union[bool, List[float]]]]
 
     def __init__(self, name: str, data: Dict[str, List[float]]):
         """

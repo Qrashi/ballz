@@ -10,7 +10,8 @@ selected: DataObject = None
 
 delta_t: List[float] = []
 _font_cache: Dict[str, pygame.Surface] = {}
-
+realtime: List[float] = []
+# Real times in seconds for every iteration 
 
 def draw():
     """
@@ -37,8 +38,9 @@ def draw():
     # The number of plots to display, if the number of plots in the selected sceneobjects are more than the window can fit (height / plot y size)
     current_plot = 0
     data_incl_perf = selected.data.copy()
-    data_incl_perf["delta t [s]"] = delta_t
-    for plot_name, data in data_incl_perf.items():
+    data_incl_perf["delta t [ns]"] = {"scale_current": True, "data": delta_t}
+    for plot_name, info in data_incl_perf.items():
+        data = info["data"]
         if len(data) == 0:
             value_rendered = _font("no data", (100, 100, 100))
         else:
@@ -48,7 +50,7 @@ def draw():
         rect = rendered.get_rect()
         # size = (x_size, y_size)
         # max x - rect x size / 2, current plot * plot y size + rect y size / 2
-        value_rect.center = (sim.window.width - value_rect.size[0] // 2, (current_plot + 1) * plot_y_size + rect.size[1] // 2 - 40)
+        value_rect.center = (sim.window.width - value_rect.size[0] // 2, (current_plot + 1) * plot_y_size + rect.size[1] // 2 - 20)
         # plot_y_size down and 10 up because bottom edge of graph
         rect.center = (sim.window.width - rect.size[0] // 2 - 5, current_plot * plot_y_size + rect.size[1] // 2 + 10)
         # +10 for white line width
@@ -57,7 +59,17 @@ def draw():
         if len(data) == 0:
             delta = 1
         else:
-            delta = max(abs(min(data)), max(data))
+            if "scale_current" in info:
+                if len(data) < sim.window.width - int(corner.x):
+                    delta = 1
+                else:
+                    delta = max(abs(min(data[-sim.window.width - int(corner.x):-1])), max(data[-sim.window.width - int(corner.x):-1]))
+                hint = _font("dynamic scale", (100, 100, 100))
+                hint_rect = hint.get_rect()
+                hint_rect.center = (sim.scene.width + hint_rect.size[0] // 2 + 10, (current_plot + 1) * plot_y_size + hint_rect.size[1] // 2 - 20)
+                sim.window.pygame_scene.blit(hint, hint_rect)
+            else:
+                delta = max(abs(min(data)), max(data))
         if delta == 0:
             delta = 1
 

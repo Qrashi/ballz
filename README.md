@@ -20,3 +20,20 @@ The launch.py file will automatically update the project and install dependencie
 
 #### In case something breaks
 Try running ``git fetch origin`` and ``git pull origin`` to update to the newest version
+
+#### Changing the setup
+
+If you would like to run the simulation with different constants or different input parameters, change the contents of the ``scenarios.json`` file. <br>
+In order to add a new scenario to which you can switch using the arrow keys, please add another "block of data" like that:
+```json
+{
+    "scenarios": [
+        {
+            # The predefined scenario
+        },  # Add a , and put your new scenario in the lines below
+        {
+            # Put the values for your simulation here (look at the default to see which values you have to provide.)
+        }
+    ]
+}
+```

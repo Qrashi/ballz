@@ -70,9 +70,9 @@ class ElasticBand(SceneObject):
         self.angle_theta = (ball_radius * delta) / current_length
         self._update_coords()
 
-        self.band_data = DataObject(name, {"length [m]": [], "ball velocity [m/s]": [], "ball acceleration [m/s²]": []})
-        self.ball_data_1 = DataObject(name + " ball 1", {"angle [rad]": [], "angular velocity [rad/s]": [], "angular acceleration [rad/s²]": [], "x [m]": [], "y [m]": []})
-        self.ball_data_2 = DataObject(name + " ball 2", {"angle [rad]": [], "angular velocity [rad/s]": [], "angular acceleration [rad/s²]": [], "x [m]": [], "y [m]": []})
+        self.band_data = DataObject(name, {"length [m]": {"data": []}, "ball velocity [m/s]": {"data": []}, "ball acceleration [m/s²]": {"data": []}})
+        self.ball_data_1 = DataObject(name + " ball 1", {"angle [rad]": {"data": []}, "angular velocity [rad/s]": {"data": []}, "angular acceleration [rad/s²]": {"data": []}, "x [m]": {"data": []}, "y [m]": {"data": []}})
+        self.ball_data_2 = DataObject(name + " ball 2", {"angle [rad]": {"data": []}, "angular velocity [rad/s]": {"data": []}, "angular acceleration [rad/s²]": {"data": []}, "x [m]": {"data": []}, "y [m]": {"data": []}})
         scene.data = scene.data + [self.band_data, self.ball_data_1, self.ball_data_2]
 
     def _update_coords(self):
@@ -91,19 +91,19 @@ class ElasticBand(SceneObject):
         Log the current state of the elastic band
         :return:
         """
-        self.band_data.data["length [m]"].append(self.length)
-        self.band_data.data["ball velocity [m/s]"].append(self.velocity_of_ball)
-        self.band_data.data["ball acceleration [m/s²]"].append(self.acceleration_of_ball)
-        self.ball_data_1.data["angle [rad]"].append(self.angle_theta)
-        self.ball_data_1.data["angular velocity [rad/s]"].append(self.angular_velocity_theta)
-        self.ball_data_1.data["angular acceleration [rad/s²]"].append(self.angular_acceleration_theta)
-        self.ball_data_1.data["x [m]"].append(self._ball_coords.x)
-        self.ball_data_1.data["y [m]"].append(self._ball_coords.y)
-        self.ball_data_2.data["angle [rad]"].append(self.angle_theta)
-        self.ball_data_2.data["angular velocity [rad/s]"].append(self.angular_velocity_theta)
-        self.ball_data_2.data["angular acceleration [rad/s²]"].append(self.angular_acceleration_theta)
-        self.ball_data_2.data["x [m]"].append(self._ball_coords_opposite.x)
-        self.ball_data_2.data["y [m]"].append(self._ball_coords_opposite.y)
+        self.band_data.data["length [m]"]["data"].append(self.length)
+        self.band_data.data["ball velocity [m/s]"]["data"].append(self.velocity_of_ball)
+        self.band_data.data["ball acceleration [m/s²]"]["data"].append(self.acceleration_of_ball)
+        self.ball_data_1.data["angle [rad]"]["data"].append(self.angle_theta)
+        self.ball_data_1.data["angular velocity [rad/s]"]["data"].append(self.angular_velocity_theta)
+        self.ball_data_1.data["angular acceleration [rad/s²]"]["data"].append(self.angular_acceleration_theta)
+        self.ball_data_1.data["x [m]"]["data"].append(self._ball_coords.x)
+        self.ball_data_1.data["y [m]"]["data"].append(self._ball_coords.y)
+        self.ball_data_2.data["angle [rad]"]["data"].append(self.angle_theta)
+        self.ball_data_2.data["angular velocity [rad/s]"]["data"].append(self.angular_velocity_theta)
+        self.ball_data_2.data["angular acceleration [rad/s²]"]["data"].append(self.angular_acceleration_theta)
+        self.ball_data_2.data["x [m]"]["data"].append(self._ball_coords_opposite.x)
+        self.ball_data_2.data["y [m]"]["data"].append(self._ball_coords_opposite.y)
 
     def physics_tick(self, delta_t: float):
         """
@@ -152,10 +152,10 @@ class ElasticBand(SceneObject):
             sim.data.selected = self.band_data
             return
 
-        if sim.mouse.mouse().distance(self._ball_coords) <= 25:
+        if sim.mouse.mouse().distance(self._ball_coords) <= self.ball_radius * 1000:
             sim.data.selected = self.ball_data_1
             return
 
-        if sim.mouse.mouse().distance(self._ball_coords_opposite) <= 25:
+        if sim.mouse.mouse().distance(self._ball_coords_opposite) <= self.ball_radius * 1000:
             sim.data.selected = self.ball_data_2
             return

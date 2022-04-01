@@ -22,4 +22,4 @@ def init():
     sim.font.main_font = pygame.font.SysFont(pool.open("config.json").json["font"], sim.font.normal_font_size)
     print("\r\033[K\rO Loading " + pool.open("config.json").json["font"] + f" size {sim.font.small_font_size}", end="")
     sim.font.small_font = pygame.font.SysFont(pool.open("config.json").json["font"], sim.font.small_font_size)
-    print("\r\033[K\r✓ Font loading complete")
+    print("\r\033[K\r✓ Font loading complete!")

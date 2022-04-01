@@ -20,13 +20,13 @@ def export_excel():
     simdata.sheet_properties.tabColor = "c6b04d"
     simdata.cell(row=1, column=1).value = "Total iterations"
     simdata.column_dimensions[utils.get_column_letter(1)].width = len("Total iterations")
-    simdata.cell(row=2, column=1).value = len(sim.data.delta_t)
+    simdata.cell(row=2, column=1).value = sim.iteration
     simdata.cell(row=1, column=2).value = "Total time [s]"
     simdata.column_dimensions[utils.get_column_letter(2)].width = len("Total time [s]")
-    simdata.cell(row=2, column=2).value = sum(sim.data.delta_t)
-    simdata.cell(row=1, column=3).value = "Wall clock time [s]"
-    simdata.column_dimensions[utils.get_column_letter(3)].width = len("Wall clock time [s]")
-    simdata.cell(row=2, column=3).value = datetime.now().timestamp() - sim.start
+    simdata.cell(row=2, column=2).value = sim.data.realtime
+    simdata.cell(row=1, column=3).value = "average CPU time per iteration [s]"
+    simdata.column_dimensions[utils.get_column_letter(3)].width = len("average CPU time per iteration [ns]")
+    simdata.cell(row=2, column=3).value = sum(sim.data.delta_t) / len(sim.data.delta_t)
     simdata.cell(row=1, column=4).value = "Export date"
     simdata.cell(row=2, column=4).value = datetime.now().strftime("%d.%m.%Y %H:%M:%S")
     simdata.column_dimensions[utils.get_column_letter(4)].width = len(datetime.now().strftime("%d.%m.%Y %H:%M:%S"))
@@ -40,13 +40,13 @@ def export_excel():
     sheet_setup(workbook["all data"])
 
     for sceneobj in sim.scene.data:
-        print(sceneobj.name)
         workbook.create_sheet(sceneobj.name)
         sheet = workbook[sceneobj.name]
         sheet.sheet_properties.tabColor = "802f8e"
         # sheet_setup(sheet)
         cell = 1
-        for plot, data in sceneobj.data.items():
+        for plot, info in sceneobj.data.items():
+            data = info["data"]
             sheet.cell(row=1, column=cell).value = plot
             alldata.cell(row=1, column=alldatacolumn).value = sceneobj.name + " - " + plot
             sheet.column_dimensions[utils.get_column_letter(cell)].width = len(plot)
@@ -68,10 +68,10 @@ def sheet_setup(sheet: worksheet):
     :param sheet: The sheet to set up
     :return:
     """
-    sheet.cell(row=1, column=1).value = "dalta t [s]"
-    sheet.column_dimensions[utils.get_column_letter(1)].width = len("delta t [s]")
+    sheet.cell(row=1, column=1).value = "real time [s]"
+    sheet.column_dimensions[utils.get_column_letter(1)].width = len("real time [s]")
 
     iteration = 2
-    for delta_t in sim.data.delta_t:
-        sheet.cell(row=iteration, column=1).value = delta_t
+    for realtime in sim.data.realtime:
+        sheet.cell(row=iteration, column=1).value = realtime
         iteration += 1

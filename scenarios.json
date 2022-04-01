@@ -1,0 +1,28 @@
+{
+    "selected": 0,
+    "scenarios": [
+        {
+            "simulation": {
+                "delta_t": 0.000001,
+                "render_every": 100
+            },
+            "setup": {
+                "balls": {
+                    "mass": 0.2453,
+                    "radius": 0.02,
+                    "friction_constant": 0.1,
+                    "torsion_constant": 0.001897,
+                    "roll_friction_constant": 0.1
+                },
+                "band": {
+                    "length": 0.17,
+                    "spring_constant": 1150.16
+                },
+                "start": {
+                    "band_length": 0.2,
+                    "alpha": 3.141592653589793
+                }
+            }
+        }
+    ]
+}
