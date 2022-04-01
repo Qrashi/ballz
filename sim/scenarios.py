@@ -20,9 +20,8 @@ def init():
     if scenarions.json["selected"] >= len(scenarions.json["scenarios"]):
         print("! Selected scenario not defined!")
         sys.exit()
-
     load_current()
-    
+
 def load_current():
     """
     Load the current scenario
@@ -58,7 +57,7 @@ def next():
     if scenarions.json["selected"] + 1 < len(scenarions.json["scenarios"]):
         scenarions.json["selected"] += 1
         reset()
-    
+
 def prev():
     """
     Switch to previous scenario
@@ -66,7 +65,7 @@ def prev():
     if scenarions.json["selected"] >= 1:
         scenarions.json["selected"] -= 1
         reset()
-    
+
 def reload():
     """
     Reload the json file from storage and reset
@@ -82,5 +81,3 @@ def selected() -> int:
     Get the selected scenario
     """
     return scenarions.json["selected"]
-
-        
