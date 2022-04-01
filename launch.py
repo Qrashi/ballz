@@ -53,9 +53,10 @@ def main():
     if config["enable_git_auto_update"] and (datetime.now().timestamp() - config["last_git_check"]) > 60:
         # If git update enabled and time since last check less than 60 seconds
         # Fetch and pull git updates
-        git.update()
         config["last_git_check"] = datetime.now().timestamp()
         config_file.save()
+        if git.update():
+            os.execl(sys.executable, sys.executable, *sys.argv)  # Restart script
 
     os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
     # Hide pygame message
