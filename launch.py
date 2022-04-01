@@ -15,7 +15,8 @@ def main():
     Launch the simulation
     :return:
     """
-    config = pool.open("config.json").json
+    config_file = pool.open("config.json")
+    config = config_file.json
 
     if config["last_git_check"] == 0:
         git.update()
@@ -44,12 +45,17 @@ def main():
         os.execl(sys.executable, sys.executable, *sys.argv)  # Restart script
 
     # Add potential "upgrade things" using config version here
+    
+    if "last_git_update" in config:
+        del config["last_git_update"]
+        config_file.save()
 
     if config["enable_git_auto_update"] and (datetime.now().timestamp() - config["last_git_check"]) > 60:
         # If git update enabled and time since last check less than 60 seconds
         # Fetch and pull git updates
         git.update()
-        config["last_git_update"] = datetime.now().timestamp()
+        config["last_git_check"] = datetime.now().timestamp()
+        config_file.save()
 
     os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
     # Hide pygame message
