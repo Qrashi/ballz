@@ -36,4 +36,3 @@ def apply():
     rect = rendered.get_rect()
     rect.center = (sim.scene.width - rendered.get_rect().size[0] // 2 - 5, sim.window.height - rendered.get_rect().size[1] // 2)
     sim.window.pygame_scene.blit(rendered, rect)
-    
