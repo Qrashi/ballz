@@ -23,10 +23,10 @@ def export_excel():
     simdata.cell(row=2, column=1).value = sim.iteration
     simdata.cell(row=1, column=2).value = "Total time [s]"
     simdata.column_dimensions[utils.get_column_letter(2)].width = len("Total time [s]")
-    simdata.cell(row=2, column=2).value = sim.data.realtime
+    simdata.cell(row=2, column=2).value = sim.loop.realtime
     simdata.cell(row=1, column=3).value = "average CPU time per iteration [s]"
     simdata.column_dimensions[utils.get_column_letter(3)].width = len("average CPU time per iteration [ns]")
-    simdata.cell(row=2, column=3).value = sum(sim.data.delta_t) / len(sim.data.delta_t)
+    simdata.cell(row=2, column=3).value = sum(sim.data.perf_time) / len(sim.data.perf_time)
     simdata.cell(row=1, column=4).value = "Export date"
     simdata.cell(row=2, column=4).value = datetime.now().strftime("%d.%m.%Y %H:%M:%S")
     simdata.column_dimensions[utils.get_column_letter(4)].width = len(datetime.now().strftime("%d.%m.%Y %H:%M:%S"))
@@ -72,6 +72,6 @@ def sheet_setup(sheet: worksheet):
     sheet.column_dimensions[utils.get_column_letter(1)].width = len("real time [s]")
 
     iteration = 2
-    for realtime in sim.data.realtime:
-        sheet.cell(row=iteration, column=1).value = realtime
+    for time in sim.data.realtime:
+        sheet.cell(row=iteration, column=1).value = time
         iteration += 1

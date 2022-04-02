@@ -45,7 +45,7 @@ def reset():
     sim.data.selected = None
     sim.data.realtime = []
     sim.loop.realtime = 0
-    sim.data.delta_t.clear()
+    sim.data.perf_time.clear()
     print("✓ Reset")
     load_current()
     sim.loop.screen()

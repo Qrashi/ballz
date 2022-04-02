@@ -8,7 +8,7 @@ from sim.scene import Coordinate, DataObject
 corner: Coordinate
 selected: DataObject = None
 
-delta_t: List[float] = []
+perf_time: List[float] = []
 _font_cache: Dict[str, pygame.Surface] = {}
 realtime: List[float] = []
 # Real times in seconds for every iteration 
@@ -38,7 +38,7 @@ def draw():
     # The number of plots to display, if the number of plots in the selected sceneobjects are more than the window can fit (height / plot y size)
     current_plot = 0
     data_incl_perf = selected.data.copy()
-    data_incl_perf["delta t [ns]"] = {"scale_current": True, "data": delta_t}
+    data_incl_perf["ns per iteration"] = {"scale_current": True, "data": perf_time}
     for plot_name, info in data_incl_perf.items():
         data = info["data"]
         if len(data) == 0:

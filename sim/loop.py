@@ -74,7 +74,7 @@ def tick(render: bool):
         obj.physics_tick(delta_t)
         obj.log()
     sim.iteration += 1
-    sim.data.delta_t.append(perf_counter_ns() - precalc)
+    sim.data.perf_time.append(perf_counter_ns() - precalc)
     sim.loop.realtime += delta_t
     sim.data.realtime.append(sim.loop.realtime)
     if render:

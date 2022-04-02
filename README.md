@@ -12,11 +12,11 @@ the [2022 IYPT problems](https://www.iypt.org/wp-content/uploads/2021/07/problem
     2. On linux, just use your standard package manager
 2. Clone this repository ``git clone https://github.com/Qrashi/ballz.git``
 3. cd into the `ballz` directory
-4. Run ``python launch.py``
+4. Run ``python ballz.py``
 
 #### Please note that windows is not offically supported, you will likely encounter bugs
 
-The launch.py file will automatically update the project and install dependencies for you.
+The ballz.py file will automatically update the project and install dependencies for you.
 
 #### In case something breaks
 Try running ``git fetch origin`` and ``git pull origin`` to update to the newest version
