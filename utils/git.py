@@ -42,16 +42,16 @@ def pull() -> bool:
     return False
 
 
-def update():
+def update() -> bool:
     """
     Run full update cycle
-    :return:
+    :return: if there has been an update
     """
     print("O Starting update", end="")
     if fetch():
         if not pull():
             print("\r\033[K\r! Update failed! (Nothing to update)")
-            return
-        os.execl(sys.executable, sys.executable, *sys.argv)  # Restart script
-    else:
-        print("\r\033[K\r✓ No updates found!")
+            return False
+        return True
+    print("\r\033[K\r✓ No updates found!")
+    return False
