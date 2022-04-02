@@ -70,9 +70,9 @@ class ElasticBand(SceneObject):
         self.angle_theta = (ball_radius * delta) / current_length
         self._update_coords()
 
-        self.band_data = DataObject(name, {"length [m]": {"data": []}, "ball velocity [m/s]": {"data": []}, "ball acceleration [m/s²]": {"data": []}})
-        self.ball_data_1 = DataObject(name + " ball 1", {"angle [rad]": {"data": []}, "angular velocity [rad/s]": {"data": []}, "angular acceleration [rad/s²]": {"data": []}, "x [m]": {"data": []}, "y [m]": {"data": []}})
-        self.ball_data_2 = DataObject(name + " ball 2", {"angle [rad]": {"data": []}, "angular velocity [rad/s]": {"data": []}, "angular acceleration [rad/s²]": {"data": []}, "x [m]": {"data": []}, "y [m]": {"data": []}})
+        self.band_data = DataObject(name, {"length [m]": {"data": [], "export": True}, "ball velocity [m/s]": {"data": [], "export": True}, "ball acceleration [m/s²]": {"data": [], "export": True}})
+        self.ball_data_1 = DataObject("ball 1", {"angle [rad]": {"data": [], "export": True}, "angular velocity [rad/s]": {"data": [], "export": True}, "angular acceleration [rad/s²]": {"data": [], "export": True}, "x [m]": {"data": [], "export": False}, "y [m]": {"data": [], "export": False}})
+        self.ball_data_2 = DataObject("ball 2", {"angle [rad]": {"data": [], "export": True}, "angular velocity [rad/s]": {"data": [], "export": True}, "angular acceleration [rad/s²]": {"data": [], "export": True}, "x [m]": {"data": [], "export": False}, "y [m]": {"data": [], "export": False}})
         scene.data = scene.data + [self.band_data, self.ball_data_1, self.ball_data_2]
 
     def _update_coords(self):

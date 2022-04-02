@@ -21,6 +21,14 @@ The ballz.py file will automatically update the project and install dependencies
 #### In case something breaks
 Try running ``git fetch origin`` and ``git pull origin`` to update to the newest version
 
+#### config.json
+
+Allows you to customize various aspects about the simulation
+* enable_git_auto_update: (true | false) Wether to enable auto downloading new updates 
+* font: ("font name") Font to use
+* max_performance: (true | false) Enable / disable max_performance mode
+* disable_log: (true | false) disable or enable data logging
+
 #### Changing the setup
 
 If you would like to run the simulation with different constants or different input parameters, change the contents of the ``scenarios.json`` file. <br>

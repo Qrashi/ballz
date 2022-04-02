@@ -32,7 +32,7 @@ def load_current():
     sim.objects.ElasticBand(sim.scene,
                             scenario["setup"]["start"]["band_length"], scenario["setup"]["band"]["length"], scenario["setup"]["start"]["alpha"], sim.scene.middle(), scenario["setup"]["band"]["spring_constant"], scenario["setup"]["balls"]["friction_constant"],
                             scenario["setup"]["balls"]["mass"], scenario["setup"]["balls"]["radius"], scenario["setup"]["balls"]["torsion_constant"], scenario["setup"]["balls"]["roll_friction_constant"],
-                            "scenario " + str(scenarions.json["selected"]) + " - elastic band")
+                            "elastic band")
     print("✓ Loaded scenario " + str(scenarions.json["selected"]))
 
 def reset():

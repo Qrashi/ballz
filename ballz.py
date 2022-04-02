@@ -15,6 +15,16 @@ def main():
     Launch the simulation
     :return:
     """
+    try:
+        import platform
+
+        if platform.system() == 'Windows':
+            from ctypes import windll
+            windll.kernel32.SetConsoleMode(windll.kernel32.GetStdHandle(-11), 7)
+    except Exception:
+        print("! Failed to set console mode, some output may look weird. (windows problem)")
+
+
     config_file = pool.open("config.json")
     config = config_file.json
 

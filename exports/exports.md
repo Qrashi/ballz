@@ -1,4 +1,4 @@
 ### Exports will be saved here
 
 #### Naming:
-```export%timestamp%.xlsx```
+```ballz_data_%timestamp%.xlsx```
