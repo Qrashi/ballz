@@ -29,6 +29,7 @@ def load_current():
     scenario = scenarions.json["scenarios"][scenarions.json["selected"]]
     sim.loop.every = scenario["simulation"]["render_every"]
     sim.loop.delta_t = scenario["simulation"]["delta_t"]
+    sim.loop.log_every = scenario["simulation"]["log_every"]
     sim.objects.ElasticBand(sim.scene,
                             scenario["setup"]["start"]["band_length"], scenario["setup"]["band"]["length"], scenario["setup"]["start"]["alpha"], sim.scene.middle(), scenario["setup"]["band"]["spring_constant"], scenario["setup"]["balls"]["friction_constant"],
                             scenario["setup"]["balls"]["mass"], scenario["setup"]["balls"]["radius"], scenario["setup"]["balls"]["torsion_constant"], scenario["setup"]["balls"]["roll_friction_constant"],

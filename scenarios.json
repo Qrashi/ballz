@@ -4,7 +4,8 @@
         {
             "simulation": {
                 "delta_t": 0.000001,
-                "render_every": 100
+                "render_every": 40000,
+                "log_every": 1
             },
             "setup": {
                 "balls": {
@@ -20,7 +21,7 @@
                 },
                 "start": {
                     "band_length": 0.2,
-                    "alpha": 3.141592653589793
+                    "alpha": 628
                 }
             }
         }

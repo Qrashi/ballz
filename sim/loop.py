@@ -10,6 +10,7 @@ from utils import pool
 delta_t = 0.000001  # Time step to simulate
 every = 5000  # How often to render a frame
 realtime = 0  # Time passed since start of simulation
+log_every = 1  # How often to log data (set to a higher number to use less RAM)
 
 maxperf = "max_perf" in pool.open("config.json").json and pool.open("config.json").json["max_perf"]
 disable_log = "disable_log" in pool.open("config.json").json and pool.open("config.json").json["disable_log"]
@@ -94,7 +95,8 @@ if maxperf:
             """
             for obj in sim.scene.objects():
                 obj.physics_tick(delta_t)
-                obj.log()
+                if sim.iteration % log_every == 0:
+                    obj.log()
             sim.iteration += 1
             sim.loop.realtime += delta_t
             sim.data.realtime.append(sim.loop.realtime)
@@ -131,7 +133,8 @@ else:
             precalc = perf_counter_ns()
             for obj in sim.scene.objects():
                 obj.physics_tick(delta_t)
-                obj.log()
+                if sim.iteration % log_every == 0:
+                    obj.log()
             sim.iteration += 1
             sim.data.perf_time.append(perf_counter_ns() - precalc)
             sim.loop.realtime += delta_t
