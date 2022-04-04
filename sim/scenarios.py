@@ -34,7 +34,7 @@ def load_current():
                             scenario["setup"]["start"]["band_length"], scenario["setup"]["band"]["length"], scenario["setup"]["start"]["alpha"], sim.scene.middle(), scenario["setup"]["band"]["spring_constant"], scenario["setup"]["balls"]["friction_constant"],
                             scenario["setup"]["balls"]["mass"], scenario["setup"]["balls"]["radius"], scenario["setup"]["balls"]["torsion_constant"], scenario["setup"]["balls"]["roll_friction_constant"],
                             "elastic band")
-    print("✓ Loaded scenario " + str(scenarions.json["selected"]))
+    print("OK Loaded scenario " + str(scenarions.json["selected"]))
 
 def reset():
     """
@@ -47,7 +47,7 @@ def reset():
     sim.data.realtime = []
     sim.loop.realtime = 0
     sim.data.perf_time.clear()
-    print("✓ Reset")
+    print("OK Reset")
     load_current()
     sim.loop.screen()
 
@@ -75,7 +75,7 @@ def reload():
     scenarions.reload()
     scenarions.json["selected"] = prev_selected
     reset()
-    print("✓ Reloaded all scenarios")
+    print("OK Reloaded all scenarios")
 
 def selected() -> int:
     """

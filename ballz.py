@@ -44,13 +44,13 @@ def main():
                 sys.exit()
             else:
                 print(
-                    "\r\033[K\r✓ Installed dependencies")  # The \r\033[K\r means go to upper line, clear upper line and start writing
+                    "\r\033[K\rOK Installed dependencies")  # The \r\033[K\r means go to upper line, clear upper line and start writing
                 # \r\033[K\r basically replaces the "Installing dependencies" with "Installed dependencies"
                 os.execl(sys.executable, sys.executable, *sys.argv)  # Restart script
 
         # This will only get executed if the import of all dependencies succeeds
         config["last_git_check"] = datetime.now().timestamp()
-        print("\r\033[K\r✓ Installation complete")
+        print("\r\033[K\rOK Installation complete")
         pool.sync()
         os.execl(sys.executable, sys.executable, *sys.argv)  # Restart script
 

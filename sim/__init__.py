@@ -33,8 +33,8 @@ def init():
     #                         0.2, 0.17, 2*math.pi, sim.scene.middle(), 1150.16, 0.1,
     #                         0.2453, 0.02, 0.001897, 0.1,
     #                         "elastic band 1")
-    print("\r\033[K\r✓ Simulation initialized!")
+    print("\r\033[K\rOK Simulation initialized!")
     loop.screen()
     loop.start()
     pygame.quit()
-    print("✓ Simulation finished!")
+    print("OK Simulation finished!")

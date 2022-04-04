@@ -36,4 +36,4 @@ class FilePool:
         """
         for file in self.__pool.values():
             file.save()
-        print("✓ Files saved!")
+        print("OK Files saved!")

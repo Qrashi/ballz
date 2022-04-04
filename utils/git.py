@@ -35,9 +35,9 @@ def pull() -> bool:
     if not pull_process.stdout.decode('utf-8').endswith("up to date.\n"):
         commit_process = run("git log -n 1 --pretty-format:\"%H\"", stdout=PIPE, stderr=PIPE, shell=True)
         if commit_process.returncode != 0:
-            print("\r\033[K\r✓ Updated to newest git version")
+            print("\r\033[K\rOK Updated to newest git version")
         else:
-            print(f"\r\033[K\r✓ Updated to commit {commit_process.stdout.decode('utf-8')}")
+            print(f"\r\033[K\rOK Updated to commit {commit_process.stdout.decode('utf-8')}")
         return True
     return False
 
@@ -53,5 +53,5 @@ def update() -> bool:
             print("\r\033[K\r! Update failed! (Nothing to update)")
             return False
         return True
-    print("\r\033[K\r✓ No updates found!")
+    print("\r\033[K\rOK No updates found!")
     return False

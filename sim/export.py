@@ -81,7 +81,7 @@ def export_excel():
 
     print("\r\033[K\rO Saving workbook to file", end="")
     workbook.save(f"exports/ballz_data_{int(round(datetime.now().timestamp()))}.xlsx")
-    print("\r\033[K\r✓ Export complete!")
+    print("\r\033[K\rOK Export complete!")
 
 def sheet_setup(sheet: worksheet):
     """
