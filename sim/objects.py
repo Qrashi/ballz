@@ -123,13 +123,17 @@ class ElasticBand(SceneObject):
         self.length = self.length + delta_t * self.velocity_of_ball
 
         self.angular_acceleration_theta = (
-                                          -2 * (self.ball_torsion_constant / self.ball_radius)
+                                          ((-2 * (self.ball_torsion_constant / self.ball_radius))
                                           * self.angle_theta
-                                          * self.length
+                                          * self.length)
+                                          
+                                          
                                           - self.ball_roll_friction_constant
-                                          # 2nd self.angular_velocity_theta is the angular velocity of the ball
                                           * (self.angular_velocity_theta * self.length + self.velocity_of_ball * self.angle_theta) / self.ball_radius
-                                        ) / self.ball_moment_of_inertia
+                                        ) / 2 * (self.ball_moment_of_inertia + self.ball_mass * self.length ** 2)
+
+
+                                        
         self.angular_velocity_theta = self.angular_velocity_theta + self.angular_acceleration_theta * delta_t
         self.angle_theta = self.angle_theta + self.angular_velocity_theta * delta_t
 
