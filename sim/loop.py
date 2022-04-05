@@ -24,7 +24,6 @@ def start():
     Start the event loop
     :return:
     """
-    global iteration
     while sim.running:
         # Set the last time to now, delta_t will include calculation time of the next step
         if sim.simulate:

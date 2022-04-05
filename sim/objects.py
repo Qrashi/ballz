@@ -126,8 +126,7 @@ class ElasticBand(SceneObject):
                                             * max(self.length - self.normal_length, 0)  # delta_l
                                             - 2 * self.ball_mass * sim.constants.g
                                             * self.friction_coefficient * - math.copysign(1, self.velocity_of_ball) + (
-                                                    self.angular_velocity_theta ** 2) * self.ball_mass * self.length
-                                        # - friction
+                                                    self.angular_velocity_theta ** 2) * self.ball_mass * self.length  # - friction
                                     ) / self.ball_mass  # copy sign of "length_speed" to the current acceleration
 
         self.velocity_of_ball = self.velocity_of_ball + delta_t * self.acceleration_of_ball
