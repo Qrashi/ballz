@@ -53,12 +53,20 @@ def draw():
         rect = rendered.get_rect()
         # size = (x_size, y_size)
         # max x - rect x size / 2, current plot * plot y size + rect y size / 2
-        value_rect.center = (sim.window.width - value_rect.size[0] // 2, (current_plot + 1) * plot_y_size + rect.size[1] // 2 - 20)
-        # plot_y_size down and 10 up because bottom edge of graph
-        rect.center = (sim.window.width - rect.size[0] // 2 - 5, current_plot * plot_y_size + rect.size[1] // 2 + 10)
+        value_rect.center = (sim.window.width - value_rect.size[0] // 2, (current_plot + 1) * plot_y_size + value_rect.size[1] // 2 - rect.size[1])
+        # current_plot + 1 * plot_y_size = y position of title of plot below
+        # - rect.size[1] = - title size of plot title
+        rect.center = (sim.window.width - rect.size[0] // 2 - 5, current_plot * plot_y_size + rect.size[1] // 2 + 5)
         # +10 for white line width
         # data * scale = y pos
         # delta is the maximum change to 0
+        if "scale_current" in info:
+            hint = _font("dynamic scale", (100, 100, 100))
+            hint_rect = hint.get_rect()
+            hint_rect.center = (sim.scene.width + hint_rect.size[0] // 2 + 10,
+                                (current_plot + 1) * plot_y_size + value_rect.size[1] // 2 - rect.size[1])
+            # same as above (L.58)
+            sim.window.pygame_scene.blit(hint, hint_rect)
         if len(data) == 0:
             delta = 1
         else:
@@ -67,10 +75,6 @@ def draw():
                     delta = 1
                 else:
                     delta = max(abs(min(data[-sim.window.width - int(corner.x):-1])), max(data[-sim.window.width - int(corner.x):-1]))
-                hint = _font("dynamic scale", (100, 100, 100))
-                hint_rect = hint.get_rect()
-                hint_rect.center = (sim.scene.width + hint_rect.size[0] // 2 + 10, (current_plot + 1) * plot_y_size + hint_rect.size[1] // 2 - 20)
-                sim.window.pygame_scene.blit(hint, hint_rect)
             else:
                 delta = max(abs(min(data)), max(data))
         if delta == 0:
