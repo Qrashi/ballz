@@ -1,3 +1,6 @@
+"""
+Utilities to collect mouse data
+"""
 import pygame.mouse
 
 import sim

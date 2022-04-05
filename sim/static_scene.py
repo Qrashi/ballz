@@ -1,3 +1,6 @@
+"""
+"Static content" to draw to every frame
+"""
 from typing import List, Tuple
 
 from pygame import Surface

@@ -1,3 +1,6 @@
+"""
+Exports data logged into excel format
+"""
 from datetime import datetime
 from openpyxl import Workbook, worksheet, utils
 

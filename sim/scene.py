@@ -1,3 +1,6 @@
+"""
+Basic scene utility classes
+"""
 from __future__ import annotations
 
 import math

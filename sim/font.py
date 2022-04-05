@@ -1,3 +1,6 @@
+"""
+Responsible for font loading
+"""
 import pygame
 import sim
 
@@ -15,9 +18,8 @@ def init():
     """
     print("O Loading font system", end="")
     pygame.font.init()
-    if sim.window.height < 1000:
-        sim.font.small_font_size = 20
-        sim.font.normal_font_size = 50
+    sim.font.small_font_size = sim.window.width // 70
+    sim.font.normal_font_size = sim.window.width // 30
     print("\r\033[K\rO Loading " + pool.open("config.json").json["font"] + f" size {sim.font.normal_font_size}", end="")
     sim.font.main_font = pygame.font.SysFont(pool.open("config.json").json["font"], sim.font.normal_font_size)
     print("\r\033[K\rO Loading " + pool.open("config.json").json["font"] + f" size {sim.font.small_font_size}", end="")

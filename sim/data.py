@@ -1,3 +1,6 @@
+""""
+Renders data logged in the simulation
+"""
 from typing import List, Dict, Tuple
 
 import pygame
