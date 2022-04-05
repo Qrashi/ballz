@@ -37,7 +37,7 @@ def main():
         except ModuleNotFoundError:
             # Install dependencies
             print("O Installing dependencies...")
-            install = run("python -m pip install -r requirements.txt", shell=True, stdout=PIPE, stderr=PIPE)
+            install = run(f"{sys.executable} -m pip install -r requirements.txt", shell=True, stdout=PIPE, stderr=PIPE)
             if install.returncode != 0:
                 print(f"\r\033[K\r! Error; could not install required dependencies - return code {install.returncode}")
                 print(f"! stdout: \n{install.stdout.decode('utf-8')}\n! stderr: \n{install.stderr.decode('utf-8')}")
