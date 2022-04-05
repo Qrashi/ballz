@@ -4,7 +4,7 @@ from typing import List, Dict, Tuple
 import pygame
 
 import sim.window
-from sim.scene import Coordinate, DataObject
+from sim.scene_objects import Coordinate, DataObject
 
 corner: Coordinate
 selected: DataObject = None

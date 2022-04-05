@@ -6,7 +6,7 @@ from __future__ import annotations
 import math
 
 import sim
-from sim.scene import SceneObject, Color, Coordinate, DataObject
+from sim.scene_objects import SceneObject, Color, Coordinate, DataObject
 
 
 class ElasticBand(SceneObject):
