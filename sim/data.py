@@ -1,6 +1,4 @@
-""""
-Renders data logged in the simulation
-"""
+""""Renders data logged in the simulation"""
 from typing import List, Dict, Tuple
 
 import pygame
@@ -14,7 +12,9 @@ selected: DataObject = None
 perf_time: List[float] = []
 _font_cache: Dict[str, pygame.Surface] = {}
 realtime: List[float] = []
-# Real times in seconds for every iteration 
+
+
+# Real times in seconds for every iteration
 
 def draw():
     """
@@ -28,7 +28,8 @@ def draw():
                          width=10)
         rendered = sim.font.main_font.render("object inspector", True, (255, 255, 255), (0, 0, 0))
         obj_rect = rendered.get_rect()
-        obj_rect.center = (corner.x + (sim.window.width - corner.x) // 2, corner.y + (sim.window.height - corner.y) // 2)
+        obj_rect.center = (
+            corner.x + (sim.window.width - corner.x) // 2, corner.y + (sim.window.height - corner.y) // 2)
         sim.window.pygame_scene.blit(rendered, obj_rect)
         rendered = sim.font.main_font.render("click to select", True, (255, 255, 255), (0, 0, 0))
         rect = rendered.get_rect()
@@ -53,7 +54,8 @@ def draw():
         rect = rendered.get_rect()
         # size = (x_size, y_size)
         # max x - rect x size / 2, current plot * plot y size + rect y size / 2
-        value_rect.center = (sim.window.width - value_rect.size[0] // 2, (current_plot + 1) * plot_y_size + value_rect.size[1] // 2 - rect.size[1])
+        value_rect.center = (sim.window.width - value_rect.size[0] // 2,
+                             (current_plot + 1) * plot_y_size + value_rect.size[1] // 2 - rect.size[1])
         # current_plot + 1 * plot_y_size = y position of title of plot below
         # - rect.size[1] = - title size of plot title
         rect.center = (sim.window.width - rect.size[0] // 2 - 5, current_plot * plot_y_size + rect.size[1] // 2 + 5)
@@ -74,7 +76,8 @@ def draw():
                 if len(data) < sim.window.width - int(corner.x):
                     delta = 1
                 else:
-                    delta = max(abs(min(data[-sim.window.width - int(corner.x):-1])), max(data[-sim.window.width - int(corner.x):-1]))
+                    delta = max(abs(min(data[-sim.window.width - int(corner.x):-1])),
+                                max(data[-sim.window.width - int(corner.x):-1]))
             else:
                 delta = max(abs(min(data)), max(data))
         if delta == 0:

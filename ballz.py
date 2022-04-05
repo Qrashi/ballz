@@ -21,9 +21,9 @@ def main():
         if platform.system() == 'Windows':
             from ctypes import windll
             windll.kernel32.SetConsoleMode(windll.kernel32.GetStdHandle(-11), 7)
-    except Exception:
+    except Exception as exc:  # skipcq: PYL-W0703 - Errors may cause the upper part to fail, but we don't care
+        print(exc)
         print("! Failed to set console mode, some output may look weird. (windows problem)")
-
 
     config_file = pool.open("config.json")
     config = config_file.json
@@ -55,7 +55,7 @@ def main():
         os.execl(sys.executable, sys.executable, *sys.argv)  # Restart script
 
     # Add potential "upgrade things" using config version here
-    
+
     if "last_git_update" in config:
         del config["last_git_update"]
         config_file.save()

@@ -2,6 +2,7 @@
 Exports data logged into excel format
 """
 from datetime import datetime
+
 from openpyxl import Workbook, worksheet, utils
 
 import sim.data
@@ -85,6 +86,7 @@ def export_excel():
     print("\r\033[K\rO Saving workbook to file", end="")
     workbook.save(f"exports/ballz_data_{int(round(datetime.now().timestamp()))}.xlsx")
     print("\r\033[K\rOK Export complete!")
+
 
 def sheet_setup(sheet: worksheet):
     """

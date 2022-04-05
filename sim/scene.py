@@ -128,7 +128,8 @@ class Scene:
         :param color: Color of line
         :return:
         """
-        pygame.draw.line(self.__display, color.tuple(), (self.corner + source).true_coordinates(), (self.corner + destination).true_coordinates())
+        pygame.draw.line(self.__display, color.tuple(), (self.corner + source).true_coordinates(),
+                         (self.corner + destination).true_coordinates())
 
     def circle(self, location: Coordinate, radius: float, color: Color):
         """
@@ -287,7 +288,7 @@ class Coordinate:
         Create a tuple to use in pygame
         :return: A tuple of (x and y)
         """
-        return self.x, sim.window.height-self.y
+        return self.x, sim.window.height - self.y
 
     def draw(self, scene: Scene, color: Color, location: Coordinate):
         """

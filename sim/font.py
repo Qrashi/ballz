@@ -2,8 +2,8 @@
 Responsible for font loading
 """
 import pygame
-import sim
 
+import sim
 from utils import pool
 
 main_font: pygame.font.SysFont

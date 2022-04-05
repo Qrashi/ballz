@@ -1,12 +1,13 @@
 """
 Window utilities
 """
-import pygame
 import math
 
+import pygame
+
 import sim
-from sim.scene import Coordinate
 from sim import Scene
+from sim.scene import Coordinate
 
 width: int
 height: int
@@ -28,4 +29,4 @@ def init():
     scene_x = math.floor(sim.window.width * 0.8)
     sim.scene = Scene(pygame_scene, Coordinate(0, 0), scene_x, sim.window.height)
     sim.data.corner = Coordinate(scene_x, 0)
-    sim.window.middle = Coordinate(sim.window.width/2, sim.window.height/2)
+    sim.window.middle = Coordinate(sim.window.width / 2, sim.window.height / 2)

@@ -4,7 +4,6 @@ A file defining all simulation objects
 from __future__ import annotations
 
 import math
-from typing import List
 
 import sim
 from sim.scene import SceneObject, Color, Coordinate, DataObject
@@ -39,7 +38,8 @@ class ElasticBand(SceneObject):
     _ball_coords_opposite: Coordinate
 
     def __init__(self, scene: sim.Scene,
-                 current_length: float, normal_length: float, delta: float, center: Coordinate, spring_constant: float, friction_coefficient: float,
+                 current_length: float, normal_length: float, delta: float, center: Coordinate, spring_constant: float,
+                 friction_coefficient: float,
                  ball_mass: float, ball_radius: float, ball_torsion_constant: float, ball_roll_friction_constant: float,
                  name: str):
         """
@@ -70,9 +70,19 @@ class ElasticBand(SceneObject):
         self.angle_theta = (ball_radius * delta) / current_length
         self._update_coords()
 
-        self.band_data = DataObject(name, {"length [m]": {"data": [], "export": True}, "ball velocity [m/s]": {"data": [], "export": True}, "ball acceleration [m/s²]": {"data": [], "export": True}})
-        self.ball_data_1 = DataObject("ball 1", {"angle [rad]": {"data": [], "export": True}, "angular velocity [rad/s]": {"data": [], "export": True}, "angular acceleration [rad/s²]": {"data": [], "export": True}, "x [m]": {"data": [], "export": False}, "y [m]": {"data": [], "export": False}})
-        self.ball_data_2 = DataObject("ball 2", {"angle [rad]": {"data": [], "export": True}, "angular velocity [rad/s]": {"data": [], "export": True}, "angular acceleration [rad/s²]": {"data": [], "export": True}, "x [m]": {"data": [], "export": False}, "y [m]": {"data": [], "export": False}})
+        self.band_data = DataObject(name, {"length [m]": {"data": [], "export": True},
+                                           "ball velocity [m/s]": {"data": [], "export": True},
+                                           "ball acceleration [m/s²]": {"data": [], "export": True}})
+        self.ball_data_1 = DataObject("ball 1", {"angle [rad]": {"data": [], "export": True},
+                                                 "angular velocity [rad/s]": {"data": [], "export": True},
+                                                 "angular acceleration [rad/s²]": {"data": [], "export": True},
+                                                 "x [m]": {"data": [], "export": False},
+                                                 "y [m]": {"data": [], "export": False}})
+        self.ball_data_2 = DataObject("ball 2", {"angle [rad]": {"data": [], "export": True},
+                                                 "angular velocity [rad/s]": {"data": [], "export": True},
+                                                 "angular acceleration [rad/s²]": {"data": [], "export": True},
+                                                 "x [m]": {"data": [], "export": False},
+                                                 "y [m]": {"data": [], "export": False}})
         scene.data = scene.data + [self.band_data, self.ball_data_1, self.ball_data_2]
 
     def _update_coords(self):
@@ -112,28 +122,26 @@ class ElasticBand(SceneObject):
         :return:
         """
         self.acceleration_of_ball = (
-            - 2 * self.spring_constant  # 2 * spring constant
-            * max(self.length - self.normal_length, 0)  # delta_l
-
-            - 2 * self.ball_mass * sim.constants.g
-            * self.friction_coefficient * - math.copysign(1, self.velocity_of_ball) + (self.angular_velocity_theta ** 2) * self.ball_mass * self.length  # - friction
-            ) / self.ball_mass  # copy sign of "length_speed" to the current acceleration
+                                            - 2 * self.spring_constant  # 2 * spring constant
+                                            * max(self.length - self.normal_length, 0)  # delta_l
+                                            - 2 * self.ball_mass * sim.constants.g
+                                            * self.friction_coefficient * - math.copysign(1, self.velocity_of_ball) + (
+                                                    self.angular_velocity_theta ** 2) * self.ball_mass * self.length
+                                        # - friction
+                                    ) / self.ball_mass  # copy sign of "length_speed" to the current acceleration
 
         self.velocity_of_ball = self.velocity_of_ball + delta_t * self.acceleration_of_ball
         self.length = self.length + delta_t * self.velocity_of_ball
 
         self.angular_acceleration_theta = (
-                                          ((-2 * (self.ball_torsion_constant / self.ball_radius))
-                                          * self.angle_theta
-                                          * self.length)
-                                          
-                                          
-                                          - self.ball_roll_friction_constant
-                                          * (self.angular_velocity_theta * self.length + self.velocity_of_ball * self.angle_theta) / self.ball_radius
-                                        ) / 2 * (self.ball_moment_of_inertia + self.ball_mass * self.length ** 2)
+                                                  ((-2 * (self.ball_torsion_constant / self.ball_radius))
+                                                   * self.angle_theta
+                                                   * self.length)
+                                                  - self.ball_roll_friction_constant
+                                                  * (
+                                                          self.angular_velocity_theta * self.length + self.velocity_of_ball * self.angle_theta) / self.ball_radius
+                                          ) / 2 * (self.ball_moment_of_inertia + self.ball_mass * self.length ** 2)
 
-
-                                        
         self.angular_velocity_theta = self.angular_velocity_theta + self.angular_acceleration_theta * delta_t
         self.angle_theta = self.angle_theta + self.angular_velocity_theta * delta_t
 
@@ -145,7 +153,8 @@ class ElasticBand(SceneObject):
         self._update_coords()
         self._scene.circle(self.center, 10, Color(0, 125, 0, alpha=10))
         self._scene.line(self._ball_coords, self._ball_coords_opposite, Color(255, 255, 255))
-        self._scene.circle(self._ball_coords, self.ball_radius * 1000, Color(0, 255, 255))  # Conversion from m to cm (px)
+        self._scene.circle(self._ball_coords, self.ball_radius * 1000,
+                           Color(0, 255, 255))  # Conversion from m to cm (px)
         self._scene.circle(self._ball_coords_opposite, self.ball_radius * 1000, Color(255, 255, 0))
 
     def click(self):

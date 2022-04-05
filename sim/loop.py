@@ -1,8 +1,10 @@
 """
 The main simulation loop handler
 """
-import pygame
 from time import perf_counter_ns
+from typing import Callable
+
+import pygame
 
 import sim
 from utils import pool
@@ -14,16 +16,19 @@ log_every = 1  # How often to log data (set to a higher number to use less RAM)
 
 maxperf = "max_perf" in pool.open("config.json").json and pool.open("config.json").json["max_perf"]
 disable_log = "disable_log" in pool.open("config.json").json and pool.open("config.json").json["disable_log"]
+iteration: Callable[[bool], None]
+
 
 def start():
     """
     Start the event loop
     :return:
     """
+    global iteration
     while sim.running:
         # Set the last time to now, delta_t will include calculation time of the next step
         if sim.simulate:
-            tick(False)
+            iteration(False)
 
         # Event loop
         for event in pygame.event.get():
@@ -35,24 +40,24 @@ def start():
                 if event.key == pygame.K_e:
                     sim.export.export_excel()
                 if event.key == pygame.K_RIGHT:
-                    sim.scenarios.next()
+                    sim.scenarios.next_scenario()
                 if event.key == pygame.K_LEFT:
-                    sim.scenarios.prev()
+                    sim.scenarios.prev_scenario()
                 if event.key == pygame.K_l:
                     sim.scenarios.reload()
                 if event.key == pygame.K_DOWN:
-                    tick(True)
+                    iteration(True)
                 if event.key == pygame.K_PAGEUP:
                     for _ in range(10):
-                        tick(False)
+                        iteration(False)
                     screen()
                 if event.key == pygame.K_PAGEDOWN:
                     for _ in range(100):
-                        tick(False)
+                        iteration(False)
                     screen()
                 if event.key == pygame.K_r:
                     sim.scenarios.reset()
-                
+
                 if event.key == pygame.K_ESCAPE:
                     sim.running = False
                     return
@@ -70,80 +75,91 @@ def start():
                     sim.data.selected = None
                 screen()
 
-if maxperf:
-    if disable_log:
-        def tick(render: bool):
-            """
-            Simulate one iteration
-            :param render: Force render a frame
-            """
-            for obj in sim.scene.objects():
-                obj.physics_tick(delta_t)
-            sim.iteration += 1
-            sim.loop.realtime += delta_t
-            sim.data.realtime.append(sim.loop.realtime)
-            if render:
-                screen()
-                return
-            if sim.iteration % every == 0:
-                screen()
+
+def generate_tick() -> Callable[[bool], None]:
+    """
+    Return a function that simulates a single time step
+    :return: the tick function
+    """
+    if maxperf:
+        if disable_log:
+            def tick(render: bool):
+                """
+                Simulate one iteration
+                :param render: Force render a frame
+                """
+                for obj in sim.scene.objects():
+                    obj.physics_tick(delta_t)
+                sim.iteration += 1
+                sim.loop.realtime += delta_t
+                sim.data.realtime.append(sim.loop.realtime)
+                if render:
+                    screen()
+                    return
+                if sim.iteration % every == 0:
+                    screen()
+        else:
+            def tick(render: bool):
+                """
+                Simulate one iteration
+                :param render: Force render a frame
+                """
+                for obj in sim.scene.objects():
+                    obj.physics_tick(delta_t)
+                    if sim.iteration % log_every == 0:
+                        obj.log()
+                sim.iteration += 1
+                sim.loop.realtime += delta_t
+                sim.data.realtime.append(sim.loop.realtime)
+                if render:
+                    screen()
+                    return
+                if sim.iteration % every == 0:
+                    screen()
     else:
-        def tick(render: bool):
-            """
-            Simulate one iteration
-            :param render: Force render a frame
-            """
-            for obj in sim.scene.objects():
-                obj.physics_tick(delta_t)
-                if sim.iteration % log_every == 0:
-                    obj.log()
-            sim.iteration += 1
-            sim.loop.realtime += delta_t
-            sim.data.realtime.append(sim.loop.realtime)
-            if render:
-                screen()
-                return
-            if sim.iteration % every == 0:
-                screen()
-else:
-    if disable_log:
-        def tick(render: bool):
-            """
-            Simulate one iteration
-            :param render: Force render a frame
-            """
-            precalc = perf_counter_ns()
-            for obj in sim.scene.objects():
-                obj.physics_tick(delta_t)
-            sim.iteration += 1
-            sim.data.perf_time.append(perf_counter_ns() - precalc)
-            sim.loop.realtime += delta_t
-            sim.data.realtime.append(sim.loop.realtime)
-            if render:
-                screen()
-                return
-            if sim.iteration % every == 0:
-                screen()
-    else:
-        def tick(render: bool):
-            """
-            Simulate one iteration
-            :param render: Force render a frame
-            """
-            precalc = perf_counter_ns()
-            for obj in sim.scene.objects():
-                obj.physics_tick(delta_t)
-                if sim.iteration % log_every == 0:
-                    obj.log()
-            sim.iteration += 1
-            sim.data.perf_time.append(perf_counter_ns() - precalc)
-            sim.loop.realtime += delta_t
-            sim.data.realtime.append(sim.loop.realtime)
-            if render:
-                screen()
-                return
-            if sim.iteration % every == 0:
-                screen()
+        if disable_log:
+            def tick(render: bool):
+                """
+                Simulate one iteration
+                :param render: Force render a frame
+                """
+                precalc = perf_counter_ns()
+                for obj in sim.scene.objects():
+                    obj.physics_tick(delta_t)
+                sim.iteration += 1
+                sim.data.perf_time.append(perf_counter_ns() - precalc)
+                sim.loop.realtime += delta_t
+                sim.data.realtime.append(sim.loop.realtime)
+                if render:
+                    screen()
+                    return
+                if sim.iteration % every == 0:
+                    screen()
+        else:
+            def tick(render: bool):
+                """
+                Simulate one iteration
+                :param render: Force render a frame
+                """
+                precalc = perf_counter_ns()
+                for obj in sim.scene.objects():
+                    obj.physics_tick(delta_t)
+                    if sim.iteration % log_every == 0:
+                        obj.log()
+                sim.iteration += 1
+                sim.data.perf_time.append(perf_counter_ns() - precalc)
+                sim.loop.realtime += delta_t
+                sim.data.realtime.append(sim.loop.realtime)
+                if render:
+                    screen()
+                    return
+                if sim.iteration % every == 0:
+                    screen()
+    return tick
+
+
+iteration = generate_tick()
+
 
 def screen():
     """

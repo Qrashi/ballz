@@ -8,7 +8,6 @@ from .filesystem import abs_filename, load
 
 
 class JsonFile:
-
     """
     An object describing a .json file in storage
     """

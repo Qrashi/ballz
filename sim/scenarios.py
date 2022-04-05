@@ -4,37 +4,44 @@ Handles loading scenarios from json file and setting them up
 import sys
 
 import sim
-
 from utils import pool
 
+scenarios = pool.open("scenarios.json")
 
-scenarions = pool.open("scenarios.json")
 
 def init():
     """
     Initialize scenarios and check for errors
     """
-    if len(scenarions.json) == 0:
+    if len(scenarios.json) == 0:
         print("! No scenarios defined!")
         sys.exit()
-    if scenarions.json["selected"] >= len(scenarions.json["scenarios"]):
+    if scenarios.json["selected"] >= len(scenarios.json["scenarios"]):
         print("! Selected scenario not defined!")
         sys.exit()
     load_current()
+
 
 def load_current():
     """
     Load the current scenario
     """
-    scenario = scenarions.json["scenarios"][scenarions.json["selected"]]
+    scenario = scenarios.json["scenarios"][scenarios.json["selected"]]
     sim.loop.every = scenario["simulation"]["render_every"]
     sim.loop.delta_t = scenario["simulation"]["delta_t"]
     sim.loop.log_every = scenario["simulation"]["log_every"]
+    sim.loop.iteration = sim.loop.generate_tick()
     sim.objects.ElasticBand(sim.scene,
-                            scenario["setup"]["start"]["band_length"], scenario["setup"]["band"]["length"], scenario["setup"]["start"]["alpha"], sim.scene.middle(), scenario["setup"]["band"]["spring_constant"], scenario["setup"]["balls"]["friction_constant"],
-                            scenario["setup"]["balls"]["mass"], scenario["setup"]["balls"]["radius"], scenario["setup"]["balls"]["torsion_constant"], scenario["setup"]["balls"]["roll_friction_constant"],
+                            scenario["setup"]["start"]["band_length"], scenario["setup"]["band"]["length"],
+                            scenario["setup"]["start"]["alpha"], sim.scene.middle(),
+                            scenario["setup"]["band"]["spring_constant"],
+                            scenario["setup"]["balls"]["friction_constant"],
+                            scenario["setup"]["balls"]["mass"], scenario["setup"]["balls"]["radius"],
+                            scenario["setup"]["balls"]["torsion_constant"],
+                            scenario["setup"]["balls"]["roll_friction_constant"],
                             "elastic band")
-    print("OK Loaded scenario " + str(scenarions.json["selected"]))
+    print("OK Loaded scenario " + str(scenarios.json["selected"]))
+
 
 def reset():
     """
@@ -51,34 +58,38 @@ def reset():
     load_current()
     sim.loop.screen()
 
-def next():
+
+def next_scenario():
     """
     Switch to next scenario
     """
-    if scenarions.json["selected"] + 1 < len(scenarions.json["scenarios"]):
-        scenarions.json["selected"] += 1
+    if scenarios.json["selected"] + 1 < len(scenarios.json["scenarios"]):
+        scenarios.json["selected"] += 1
         reset()
 
-def prev():
+
+def prev_scenario():
     """
     Switch to previous scenario
     """
-    if scenarions.json["selected"] >= 1:
-        scenarions.json["selected"] -= 1
+    if scenarios.json["selected"] >= 1:
+        scenarios.json["selected"] -= 1
         reset()
+
 
 def reload():
     """
     Reload the json file from storage and reset
     """
     prev_selected = selected()
-    scenarions.reload()
-    scenarions.json["selected"] = prev_selected
+    scenarios.reload()
+    scenarios.json["selected"] = prev_selected
     reset()
     print("OK Reloaded all scenarios")
+
 
 def selected() -> int:
     """
     Get the selected scenario
     """
-    return scenarions.json["selected"]
+    return scenarios.json["selected"]
