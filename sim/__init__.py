@@ -7,10 +7,9 @@ from datetime import datetime
 import pygame
 
 import sim.objects
-from . import loop, window, font, constants, mouse, data, static_scene, export, scenarios
-from .scene import Scene, Coordinate
+from . import loop, window, font, constants, mouse, data, static_scene, export, scenarios, scene_objects, objects
 
-scene: Scene
+scene: scene_objects.Scene
 iteration: int = 0
 running = True
 simulate = False
