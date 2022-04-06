@@ -125,21 +125,21 @@ class ElasticBand(SceneObject):
                                             - 2 * self.spring_constant  # 2 * spring constant
                                             * max(self.length - self.normal_length, 0)  # delta_l
                                             - 2 * self.ball_mass * sim.constants.g
-                                            * self.friction_coefficient * - math.copysign(1, self.velocity_of_ball) + (
-                                                    self.angular_velocity_theta ** 2) * self.ball_mass * self.length  # - friction
+                                            * self.friction_coefficient * - math.copysign(1, self.velocity_of_ball)  # - friction
+                                            + (self.angular_velocity_theta ** 2) * self.ball_mass * self.length  # centrifugal force
                                     ) / self.ball_mass  # copy sign of "length_speed" to the current acceleration
 
         self.velocity_of_ball = self.velocity_of_ball + delta_t * self.acceleration_of_ball
         self.length = self.length + delta_t * self.velocity_of_ball
 
         self.angular_acceleration_theta = (
-                                                  ((-2 * (self.ball_torsion_constant / self.ball_radius))
+                                                  (-2 * (self.ball_torsion_constant / self.ball_radius)
                                                    * self.angle_theta
                                                    * self.length)
-                                                  - self.ball_roll_friction_constant
-                                                  * (
-                                                          self.angular_velocity_theta * self.length + self.velocity_of_ball * self.angle_theta) / self.ball_radius
-                                          ) / 2 * (self.ball_moment_of_inertia + self.ball_mass * self.length ** 2)
+                                                  #- self.ball_roll_friction_constant
+                                                  #* ((
+                                                  #        self.angular_velocity_theta * self.length + self.velocity_of_ball * self.angle_theta) / self.ball_radius)
+                                          ) / (2 * (self.ball_moment_of_inertia + self.ball_mass * self.length ** 2))
 
         self.angular_velocity_theta = self.angular_velocity_theta + self.angular_acceleration_theta * delta_t
         self.angle_theta = self.angle_theta + self.angular_velocity_theta * delta_t

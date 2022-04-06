@@ -1,4 +1,4 @@
-""""Renders data logged in the simulation"""
+"""Renders data logged in the simulation"""
 from typing import List, Dict, Tuple
 
 import pygame
@@ -74,7 +74,7 @@ def draw():
         else:
             if "scale_current" in info:
                 if len(data) < sim.window.width - int(corner.x):
-                    delta = 1
+                    delta = max(abs(min(data)), max(data))
                 else:
                     delta = max(abs(min(data[-sim.window.width - int(corner.x):-1])),
                                 max(data[-sim.window.width - int(corner.x):-1]))
