@@ -64,7 +64,7 @@ class DataObject:
     name: str
     data: Dict[str, Dict[str, Union[bool, List[float]]]]
 
-    def __init__(self, name: str, data: Dict[str, List[float]]):
+    def __init__(self, name: str, data: Dict[str, Dict[str, Union[bool, List[float]]]]):
         """
         Initialize the data object
         :param name: Name of the dataobject
