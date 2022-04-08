@@ -90,8 +90,6 @@ def generate_tick() -> Callable[[bool], None]:
                 for obj in sim.scene.objects():
                     obj.physics_tick(delta_t)
                 sim.iteration += 1
-                sim.loop.realtime += delta_t
-                sim.data.realtime.append(sim.loop.realtime)
                 if render:
                     screen()
                     return
@@ -107,9 +105,9 @@ def generate_tick() -> Callable[[bool], None]:
                     obj.physics_tick(delta_t)
                     if sim.iteration % log_every == 0:
                         obj.log()
+                        sim.loop.realtime += delta_t
+                        sim.data.realtime.append(sim.loop.realtime)
                 sim.iteration += 1
-                sim.loop.realtime += delta_t
-                sim.data.realtime.append(sim.loop.realtime)
                 if render:
                     screen()
                     return
@@ -122,13 +120,9 @@ def generate_tick() -> Callable[[bool], None]:
                 Simulate one iteration
                 :param render: Force render a frame
                 """
-                precalc = perf_counter_ns()
                 for obj in sim.scene.objects():
                     obj.physics_tick(delta_t)
                 sim.iteration += 1
-                sim.data.perf_time.append(perf_counter_ns() - precalc)
-                sim.loop.realtime += delta_t
-                sim.data.realtime.append(sim.loop.realtime)
                 if render:
                     screen()
                     return
@@ -145,10 +139,10 @@ def generate_tick() -> Callable[[bool], None]:
                     obj.physics_tick(delta_t)
                     if sim.iteration % log_every == 0:
                         obj.log()
+                        sim.data.perf_time.append(perf_counter_ns() - precalc)
+                        sim.loop.realtime += delta_t
+                        sim.data.realtime.append(sim.loop.realtime)
                 sim.iteration += 1
-                sim.data.perf_time.append(perf_counter_ns() - precalc)
-                sim.loop.realtime += delta_t
-                sim.data.realtime.append(sim.loop.realtime)
                 if render:
                     screen()
                     return

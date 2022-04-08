@@ -122,23 +122,20 @@ class ElasticBand(SceneObject):
         :return:
         """
         self.acceleration_of_ball = (
-                                            - 2 * self.spring_constant  # 2 * spring constant
+                                            - 1.42 * self.spring_constant  # 2 * spring constant
                                             * max(self.length - self.normal_length, 0)  # delta_l
                                             - 2 * self.ball_mass * sim.constants.g
-                                            * (self.friction_coefficient * - copysign(1, self.velocity_of_ball))  # - friction
+                                            * (self.friction_coefficient * copysign(1, self.velocity_of_ball))  # - friction
                                             + (self.angular_velocity_theta ** 2) * self.ball_mass * self.length  # centrifugal force
                                     ) / self.ball_mass  # copy sign of "length_speed" to the current acceleration
-
+        
         self.velocity_of_ball = self.velocity_of_ball + delta_t * self.acceleration_of_ball
         self.length = self.length + delta_t * self.velocity_of_ball
 
         self.angular_acceleration_theta = (
-                                                  (-2 * (self.ball_torsion_constant / self.ball_radius)
-                                                   * self.angle_theta
-                                                   * self.length)
+                                                  (-2 * self.ball_torsion_constant) * ((self.angle_theta * self.length) / self.ball_radius)
                                                   - self.ball_roll_friction_constant
-                                                  * ((
-                                                             self.angular_velocity_theta * self.length + self.velocity_of_ball * self.angle_theta) / self.ball_radius)
+                                                  * self.ball_mass * sim.constants.g
                                           ) / (2 * (self.ball_moment_of_inertia + self.ball_mass * self.length ** 2))
 
         self.angular_velocity_theta = self.angular_velocity_theta + self.angular_acceleration_theta * delta_t
@@ -160,14 +157,14 @@ class ElasticBand(SceneObject):
         """
         Check if object was clicked and select it
         """
-        if sim.mouse.mouse().distance(self.center) <= 25:
+        if sim.mouse.mouse().distance(self.center) <= 10:
             sim.data.selected = self.band_data
             return
 
-        if sim.mouse.mouse().distance(self._ball_coords) <= self.ball_radius * 1000:
+        if sim.mouse.mouse().distance(self._ball_coords) <= self.ball_radius * 500:
             sim.data.selected = self.ball_data_1
             return
 
-        if sim.mouse.mouse().distance(self._ball_coords_opposite) <= self.ball_radius * 1000:
+        if sim.mouse.mouse().distance(self._ball_coords_opposite) <= self.ball_radius * 500:
             sim.data.selected = self.ball_data_2
             return
