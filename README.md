@@ -1,4 +1,5 @@
-[![DeepSource](https://deepsource.io/gh/Qrashi/ballz.svg/?label=active+issues&show_trend=true&token=Dow_XNocdGMrkQMloU73omFl)](https://deepsource.io/gh/Qrashi/ballz/?ref=repository-badge)
+![DeepSource issues](https://deepsource.io/gh/Qrashi/ballz.svg/?label=active+issues&show_trend=true&token=Dow_XNocdGMrkQMloU73omFl)
+![GitHub issues](https://img.shields.io/github/issues-raw/Qrashi/ballz)
 
 # ballz
 
